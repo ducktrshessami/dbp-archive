@@ -1,0 +1,27 @@
+{
+  "name": "dbp-archive",
+  "version": "0.1.0",
+  "description": "Send these messages to the principal's office!",
+  "main": "server/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server/index.js",
+    "start-react": "cd client && yarn start",
+    "build": "cd client && yarn build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ducktrshessami/dbp-archive.git"
+  },
+  "author": "ducktrshessami",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ducktrshessami/dbp-archive/issues"
+  },
+  "homepage": "https://github.com/ducktrshessami/dbp-archive#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "sequelize": "^6.28.0",
+    "sqlite3": "^5.1.4"
+  }
+}
