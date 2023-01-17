@@ -9,6 +9,7 @@
     "prestart": "yarn build",
     "start": "node dist/index.js",
     "build": "tsc",
+    "clean": "rm -rf dist/ client/build/",
     "install-client": "cd client && yarn",
     "start-client": "cd client && yarn start",
     "build-client": "cd client && yarn build",
