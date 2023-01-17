@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/index.js",
-    "start-react": "cd client && yarn start",
-    "build": "cd client && yarn build"
+    "start-client": "cd client && yarn start",
+    "build-client": "cd client && yarn build"
   },
   "repository": {
     "type": "git",
