@@ -5,9 +5,15 @@
   "main": "server/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "yarn install-client && yarn install-worker",
     "start": "node server/index.js",
+    "build": "tsc",
+    "install-client": "cd client && yarn",
     "start-client": "cd client && yarn start",
-    "build-client": "cd client && yarn build"
+    "build-client": "cd client && yarn build",
+    "install-worker": "cd worker && yarn",
+    "start-worker": "cd worker && yarn start",
+    "deploy-worker": "cd worker && yarn deploy"
   },
   "repository": {
     "type": "git",
