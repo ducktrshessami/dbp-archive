@@ -16,6 +16,7 @@ export default {
             destination.search = source.search;
             destination.hash = source.hash;
             const redirect = new Request(destination.toString(), request);
+            redirect.headers.set("ngrok-skip-browser-warning", "foobar");
             return fetch(redirect);
         }
         else {
