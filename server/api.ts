@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { existsSync } from "fs";
 import { join, resolve } from "path";
-import { Channel } from "../models";
+import { Channel, sequelize } from "../models";
+import { PAGE_LIMIT } from "./constants";
 
 const ATTACHMENTS_PATH = resolve(__dirname, "..", "attachments");
 export const router = Router();
@@ -28,14 +29,28 @@ router
     });
 
 async function channelList(): Promise<Array<ChannelData>> {
-    const models = await Channel.findAll({ attributes: ["id", "name"] });
+    const models = <Array<CountedChannel>>await Channel.findAll({
+        attributes: [
+            "id",
+            "name",
+            [sequelize.literal("(SELECT COUNT(*) FROM `Messages` as `Message` WHERE `Message`.`ChannelId` = `Channel`.`id`)"), "MessageCount"]
+        ]
+    });
     return models.map(model => ({
         id: model.id,
-        name: model.name
+        name: model.name,
+        pages: Math.ceil(model.getDataValue("MessageCount") / PAGE_LIMIT)
     }));
 }
 
+interface CountedMessages {
+    getDataValue(key: "MessageCount"): number;
+}
+
+type CountedChannel = Channel & CountedMessages;
+
 type ChannelData = {
     id: string,
-    name: string
+    name: string,
+    pages: number
 };
