@@ -106,3 +106,7 @@ dist
 # Sequelize Local files
 migrations/
 seeders/
+
+# Local data
+attachments/
+sqlite/
