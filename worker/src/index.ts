@@ -1,6 +1,5 @@
 export interface Env {
-    // Example KV binding
-    KV_NAMESPACE: KVNamespace;
+    RRP: KVNamespace;
 }
 
 export default {
@@ -9,8 +8,7 @@ export default {
         env: Env,
         _: ExecutionContext
     ): Promise<Response> {
-        // Example KV key
-        const KV_DESTINATION = await env.KV_NAMESPACE.get("DESTINATION", { type: "text" });
+        const KV_DESTINATION = await env.RRP.get("DBP_ARCHIVE", { type: "text" });
         if (KV_DESTINATION) {
             const source = new URL(request.url);
             const destination = new URL(KV_DESTINATION);
