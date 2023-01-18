@@ -1,14 +1,12 @@
-import e, { json, urlencoded } from "express";
-import { router as apiRouter } from "./api";
-import { router as clientRouter } from "./client";
-import { PORT } from "./constants";
+try {
+    require("dotenv").config();
+}
+catch {
+    console.warn("Not using dotenv. Ensure environment variables are set");
+}
 
-const app = e()
-    .use(urlencoded({ extended: true }))
-    .use(json())
-    .use(apiRouter)
-    .use(clientRouter);
+import { listen } from "./app";
 
-app.listen(PORT, () => {
-    console.log(`[server] Listening on port ${PORT}`);
-});
+(async function main() {
+    await listen();
+})();
