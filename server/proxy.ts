@@ -1,9 +1,10 @@
+import { connect } from "ngrok";
 import {
     Dispatcher,
     FormData,
     request
 } from "undici";
-import { CF_KEY } from "./constants";
+import { CF_KEY, PORT } from "./constants";
 import { RequestError } from "./error";
 
 const WRITE_ENDPOINT = `https://api.cloudflare.com/client/v4/accounts/${process.env.CF_ACCOUNT}/storage/kv/namespaces/${process.env.CF_NAMESPACE}/values/${CF_KEY}`;
@@ -27,6 +28,15 @@ async function storeProxyUrl(url: string): Promise<void> {
         headers: { authorization: `Bearer ${process.env.CF_TOKEN}` },
         body: data
     });
+}
+
+export async function proxy(): Promise<void> {
+    const url = await connect({
+        authtoken: process.env.NGROK_TOKEN,
+        addr: PORT
+    });
+    await storeProxyUrl(url);
+    console.log(`[proxy] Proxied port ${PORT} to ${url}`);
 }
 
 type RequestOptions = { dispatcher?: Dispatcher } & Omit<Dispatcher.RequestOptions, "origin" | "path" | "method"> & Partial<Pick<Dispatcher.RequestOptions, "method">>;
