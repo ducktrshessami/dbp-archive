@@ -5,8 +5,11 @@ catch {
     console.warn("Not using dotenv. Ensure environment variables are set");
 }
 
+import { sequelize } from "../models";
 import { listen } from "./app";
+import { DB_FORCE } from "./constants";
 
 (async function main() {
+    await sequelize.sync({ force: DB_FORCE });
     await listen();
 })();
