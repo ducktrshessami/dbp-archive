@@ -33,7 +33,8 @@ async function storeProxyUrl(url: string): Promise<void> {
 export async function proxy(): Promise<void> {
     const url = await connect({
         authtoken: process.env.NGROK_TOKEN,
-        addr: PORT
+        addr: PORT,
+        onLogEvent: console.debug
     });
     await storeProxyUrl(url);
     console.log(`[proxy] Proxied port ${PORT} to ${url}`);
