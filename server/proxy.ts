@@ -39,4 +39,8 @@ export async function proxy(): Promise<void> {
     console.log(`[proxy] Proxied port ${PORT} to ${url}`);
 }
 
+export function proxyReady(): boolean {
+    return !!process.env.NGROK_TOKEN && !!process.env.CF_TOKEN && !!process.env.CF_ACCOUNT && !!process.env.CF_NAMESPACE;
+}
+
 type RequestOptions = { dispatcher?: Dispatcher } & Omit<Dispatcher.RequestOptions, "origin" | "path" | "method"> & Partial<Pick<Dispatcher.RequestOptions, "method">>;
