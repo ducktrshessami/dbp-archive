@@ -1,8 +1,10 @@
 import { Component } from "react";
+import { ChannelData, getChannels } from "../../api";
 
-export default class Archive extends Component {
-    componentDidMount() {
-
+export default class Archive extends Component<{}, ArchiveState> {
+    async componentDidMount() {
+        const channels = await getChannels();
+        this.state = { channels };
     }
 
     render() {
@@ -13,3 +15,5 @@ export default class Archive extends Component {
         );
     }
 }
+
+type ArchiveState = { channels?: Array<ChannelData> };
