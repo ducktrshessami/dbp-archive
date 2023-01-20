@@ -1,12 +1,25 @@
+class CustomError extends Error {
+    constructor(message?: string) {
+        super(message);
+        this.name = this.constructor.name;
+    }
+}
+
+class RequestError extends CustomError { }
+
 async function fetchJson(url: string): Promise<any> {
     const res = await fetch(url);
     if (res.status < 400) {
         return await res.json();
     }
+    else {
+        throw new RequestError(`${res.status} ${res.statusText}`);
+    }
 }
 
-export async function getChannels(): Promise<Array<ChannelData>> {
-    return await fetchJson("/api/channels");
+export async function getChannels(): Promise<Map<string, ChannelData>> {
+    const channels: Array<ChannelData> = await fetchJson("/api/channels");
+    return new Map<string, ChannelData>(channels.map(channel => [channel.id, channel]));
 }
 
 export async function getChannelPage(channelId: string, page: number): Promise<Array<MessagesData>> {
