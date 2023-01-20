@@ -16,13 +16,13 @@ const ATTACHMENTS_PATH = resolve(__dirname, "..", "attachments");
 export const router = Router();
 
 router
-    .get("/channels", async (_, res) => {
+    .get("/api/channels", async (_, res) => {
         const channels = await channelList();
         res
             .status(200)
             .json(channels);
     })
-    .get("/channel/:channelId/:page", async (req, res) => {
+    .get("/api/channel/:channelId/:page", async (req, res) => {
         const pageNumber = parseInt(req.params.page);
         if (isNaN(pageNumber) || pageNumber.toString() !== req.params.page) {
             res
@@ -41,7 +41,7 @@ router
             .status(200)
             .json(page);
     })
-    .get("/attachment/:filename", (req, res) => {
+    .get("/api/attachment/:filename", (req, res) => {
         const filepath = join(ATTACHMENTS_PATH, req.params.filename);
         if (existsSync(filepath)) {
             res
