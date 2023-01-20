@@ -13,6 +13,10 @@ export async function getChannelPage(channelId: string, page: number): Promise<A
     return await fetchJson(`/api/channel/${channelId}/${page}`);
 }
 
+export function attachmentUrl(filename: string): string {
+    return `/api/attachment/${filename}`;
+}
+
 type ChannelData = {
     id: string,
     name: string,
