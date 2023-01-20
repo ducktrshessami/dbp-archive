@@ -77,7 +77,7 @@ function avatarUrl(id: string, discriminator: string, hash?: string): string {
 async function getChannelPage(channelId: string, pageIndex: number): Promise<MessagesData | null> {
     const messages = await Message.findAll({
         where: { ChannelId: channelId },
-        attributes: ["id", "content", "createdAt"],
+        attributes: ["id", "content", "createdAt", "UserId"],
         limit: PAGE_LIMIT,
         offset: pageIndex * PAGE_LIMIT,
         include: [
@@ -109,6 +109,7 @@ async function getChannelPage(channelId: string, pageIndex: number): Promise<Mes
         }
         data[0].push({
             id: message.id,
+            authorId: message.UserId,
             content: message.content,
             createdAt: message.createdAt.getTime(),
             break: !!message.Break,
@@ -136,6 +137,7 @@ type ChannelData = {
 
 type MessageData = {
     id: string,
+    authorId: string,
     content: string,
     createdAt: number,
     break: boolean,

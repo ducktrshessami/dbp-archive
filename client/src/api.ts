@@ -25,6 +25,7 @@ export type ChannelData = {
 
 export type MessageData = {
     id: string,
+    authorId: string,
     content: string,
     createdAt: number,
     break: boolean,
