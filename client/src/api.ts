@@ -17,13 +17,13 @@ export function attachmentUrl(filename: string): string {
     return `/api/attachment/${filename}`;
 }
 
-type ChannelData = {
+export type ChannelData = {
     id: string,
     name: string,
     pages: number
 };
 
-type MessageData = {
+export type MessageData = {
     id: string,
     content: string,
     createdAt: number,
@@ -31,14 +31,14 @@ type MessageData = {
     attachments: Array<string>
 };
 
-type UserData = {
+export type UserData = {
     id: string,
     username: string,
     discriminator: string,
     avatarUrl: string
 };
 
-type MessagesData = {
+export type MessagesData = {
     messages: Array<MessageData>,
     users: Array<UserData>
 };
