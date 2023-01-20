@@ -16,4 +16,7 @@ export default class Archive extends Component<{}, ArchiveState> {
     }
 }
 
-type ArchiveState = { channels?: Array<ChannelData> };
+type ArchiveState = {
+    channels?: Map<string, ChannelData>,
+    selected?: string
+};
