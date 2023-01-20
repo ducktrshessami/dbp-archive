@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { ChannelData, getChannels } from "../../api";
+import { ChannelData, getChannels } from "../../utils/api";
 
 export default class Archive extends Component<{}, ArchiveState> {
     async componentDidMount() {
