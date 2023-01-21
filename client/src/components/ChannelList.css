@@ -2,4 +2,10 @@
     background-color: #2F3136;
     display: inline-block;
     width: 25%;
+    text-align: left;
+}
+
+.channel-list ul {
+    padding: 0 2ch;
+    list-style: none;
 }
