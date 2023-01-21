@@ -1,5 +1,6 @@
 import { Component } from "react";
 import ChannelList from "../components/ChannelList";
+import MessageList from "../components/MessageList";
 import { ChannelData, getChannels } from "../utils/api";
 
 export default class Archive extends Component<{}, ArchiveState> {
@@ -12,6 +13,7 @@ export default class Archive extends Component<{}, ArchiveState> {
         return (
             <main>
                 <ChannelList channels={this.state?.channels} selected={this.state?.selected} />
+                <MessageList />
             </main>
         );
     }
