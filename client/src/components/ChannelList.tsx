@@ -26,6 +26,6 @@ export default function ChannelList(props: ChannelListProps) {
 }
 
 type ChannelListProps = {
-    channels?: Array<ChannelData> | null,
-    selected?: string | null
+    channels?: Nullable<Array<ChannelData>>,
+    selected?: Nullable<string>
 };

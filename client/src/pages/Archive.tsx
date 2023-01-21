@@ -19,6 +19,6 @@ export default class Archive extends Component<{}, ArchiveState> {
 }
 
 type ArchiveState = {
-    channels?: Map<string, ChannelData>,
-    selected?: string
+    channels?: Nullable<Map<string, ChannelData>>,
+    selected?: Nullable<string>
 };
