@@ -1,13 +1,21 @@
 import { BeatLoader } from "react-spinners";
 import { ChannelData } from "../utils/api";
+import Channel from "./Channel";
 import "./ChannelList.css";
 
 function renderChannelList(props: ChannelListProps) {
     if (props.channels) {
+        const channels = props.channels.map(channel =>
+            <Channel
+                id={channel.id}
+                name={channel.name}
+                selected={channel.id === props.selected}
+            />
+        );
         return (
-            <div>
-
-            </div>
+            <ul>
+                {channels}
+            </ul>
         );
     }
     else {
