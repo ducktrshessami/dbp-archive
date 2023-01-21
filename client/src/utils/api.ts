@@ -17,9 +17,8 @@ async function fetchJson(url: string): Promise<any> {
     }
 }
 
-export async function getChannels(): Promise<Map<string, ChannelData>> {
-    const channels: Array<ChannelData> = await fetchJson("/api/channels");
-    return new Map<string, ChannelData>(channels.map(channel => [channel.id, channel]));
+export async function getChannels(): Promise<Array<ChannelData>> {
+    return await fetchJson("/api/channels");
 }
 
 export async function getChannelPage(channelId: string, page: number): Promise<Array<MessagesData>> {

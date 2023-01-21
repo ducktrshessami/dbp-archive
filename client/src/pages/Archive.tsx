@@ -9,16 +9,15 @@ export default class Archive extends Component<{}, ArchiveState> {
     }
 
     render() {
-        const channelArray = this.state?.channels ? Array.from(this.state.channels.values()) : null;
         return (
             <main>
-                <ChannelList channels={channelArray} selected={this.state?.selected} />
+                <ChannelList channels={this.state?.channels} selected={this.state?.selected} />
             </main>
         );
     }
 }
 
 type ArchiveState = {
-    channels?: Nullable<Map<string, ChannelData>>,
+    channels?: Nullable<Array<ChannelData>>,
     selected?: Nullable<string>
 };
