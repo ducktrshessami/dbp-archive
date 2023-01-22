@@ -5,38 +5,45 @@ import { getChannelPage, MessagesData } from "../utils/api";
 import Message from "./Message";
 import "./MessageList.css";
 
-function renderMessageList(messageData: Nullable<MessagesData>) {
-    if (messageData) {
-        const messages = messageData.messages.map(message =>
-            <Message
-                key={message.id}
-                id={message.id}
-                author={messageData.users.get(message.authorId)!}
-                content={message.content}
-                createdAt={new Date(message.createdAt)}
-                attachments={message.attachments}
-                break={message.break}
-            />
-        );
-        return (
-            <ul>
-                {messages}
-            </ul>
-        );
-    }
-    else {
-        return (
-            <BeatLoader />
-        );
+function renderMessageList(channelSelected: boolean, messageData: Nullable<MessagesData>) {
+    switch (true) {
+        case !!messageData:
+            const messages = messageData!.messages.map(message =>
+                <Message
+                    key={message.id}
+                    id={message.id}
+                    author={messageData!.users.get(message.authorId)!}
+                    content={message.content}
+                    createdAt={new Date(message.createdAt)}
+                    attachments={message.attachments}
+                    break={message.break}
+                />
+            );
+            return (
+                <ul>
+                    {messages}
+                </ul>
+            );
+        case channelSelected:
+            return (
+                <BeatLoader />
+            );
+        default:
+            return (
+                <div>
+
+                </div>
+            );
     }
 }
 
 export default function MessageList(props: MessageListProps) {
+    const channelSelected = !!props.channelId && !!props.page;
     const navigate = useNavigate();
     const [messageData, setMessagedata] = useState<Nullable<MessagesData>>(null);
 
     useEffect(() => {
-        if (props.channelId && props.page && messageData === null) {
+        if (channelSelected && messageData === null) {
             (async function () {
                 const page = parseInt(props.page!);
                 if (isNaN(page) || page.toString() !== props.page) {
@@ -57,7 +64,7 @@ export default function MessageList(props: MessageListProps) {
 
     return (
         <div className="message-list">
-            {renderMessageList(messageData)}
+            {renderMessageList(channelSelected, messageData)}
         </div>
     );
 }
