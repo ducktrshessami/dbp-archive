@@ -12,6 +12,7 @@ export default function App() {
         <div className="App">
             <BrowserRouter>
                 <Routes>
+                    <Route path="/:channelId/:page" element={<Archive />} />
                     <Route path="/" element={<Archive />} />
                     <Route path="/*" element={<Navigate to="/" replace={true} />} />
                 </Routes>
