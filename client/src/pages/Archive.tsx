@@ -1,25 +1,24 @@
-import { Component } from "react";
+import { useEffect, useState } from "react";
 import ChannelList from "../components/ChannelList";
 import MessageList from "../components/MessageList";
 import { ChannelData, getChannels } from "../utils/api";
 
-export default class Archive extends Component<{}, ArchiveState> {
-    async componentDidMount() {
-        const channels = await getChannels();
-        this.setState({ channels });
-    }
+export default function Archive() {
+    const [channels, setChannels] = useState<Nullable<Array<ChannelData>>>(null);
+    const [selected, setSelected] = useState<Nullable<string>>(null);
 
-    render() {
-        return (
-            <main>
-                <ChannelList channels={this.state?.channels} selected={this.state?.selected} />
-                <MessageList />
-            </main>
-        );
-    }
+    useEffect(() => {
+        if (channels === null) {
+            (async function init() {
+                setChannels(await getChannels());
+            })();
+        }
+    });
+
+    return (
+        <main>
+            <ChannelList channels={channels} selected={selected} />
+            <MessageList />
+        </main>
+    );
 }
-
-type ArchiveState = {
-    channels?: Nullable<Array<ChannelData>>,
-    selected?: Nullable<string>
-};
