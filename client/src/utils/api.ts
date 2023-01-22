@@ -1,11 +1,4 @@
-class CustomError extends Error {
-    constructor(message?: string) {
-        super(message);
-        this.name = this.constructor.name;
-    }
-}
-
-class RequestError extends CustomError { }
+import { RequestError } from "./error";
 
 async function fetchJson(url: string): Promise<any> {
     const res = await fetch(url);
