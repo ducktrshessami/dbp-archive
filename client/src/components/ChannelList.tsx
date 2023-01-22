@@ -7,6 +7,7 @@ function renderChannelList(props: ChannelListProps) {
     if (props.channels) {
         const channels = props.channels.map(channel =>
             <Channel
+                key={channel.id}
                 id={channel.id}
                 name={channel.name}
                 selected={channel.id === props.selected}
