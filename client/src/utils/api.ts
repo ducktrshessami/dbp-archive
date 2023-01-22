@@ -15,7 +15,11 @@ export async function getChannels(): Promise<Array<ChannelData>> {
 }
 
 export async function getChannelPage(channelId: string, page: number): Promise<MessagesData> {
-    return await fetchJson(`/api/channel/${channelId}/${page}`);
+    const rawData: RawMessagesData = await fetchJson(`/api/channel/${channelId}/${page}`);
+    return {
+        messages: rawData.messages,
+        users: new Map<string, UserData>(rawData.users.map(user => [user.id, user]))
+    };
 }
 
 export type ChannelData = {
@@ -40,7 +44,12 @@ export type UserData = {
     avatarUrl: string
 };
 
-export type MessagesData = {
+type RawMessagesData = {
     messages: Array<MessageData>,
     users: Array<UserData>
+};
+
+export type MessagesData = {
+    messages: Array<MessageData>,
+    users: Map<string, UserData>
 };
