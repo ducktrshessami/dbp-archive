@@ -62,6 +62,7 @@ async function getChannelPage(channelId: string, pageIndex: number): Promise<Mes
     const messages = await Message.findAll({
         where: { ChannelId: channelId },
         attributes: ["id", "content", "createdAt", "UserId"],
+        order: [["createdAt", "ASC"]],
         limit: PAGE_LIMIT,
         offset: pageIndex * PAGE_LIMIT,
         include: [
