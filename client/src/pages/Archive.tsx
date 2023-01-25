@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import ChannelList from "../components/ChannelList";
 import MessageList from "../components/MessageList";
 import { ChannelData, getChannels } from "../utils/api";
+import "./Archive.css";
 
 export default function Archive() {
     const { channelId, page } = useParams<ArchiveParams>();
@@ -21,7 +22,7 @@ export default function Archive() {
     }, [channels, channelId]);
 
     return (
-        <main>
+        <main className="archive">
             <ChannelList channels={channels} selected={channelId} />
             <MessageList channelId={channelId} page={page} pageCount={pageCount} />
         </main>
