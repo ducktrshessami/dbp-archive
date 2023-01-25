@@ -1,4 +1,4 @@
-import { UserData } from "../utils/api";
+import { MessageProps } from "./MessageProps";
 
 export default function Message(props: MessageProps) {
     return (
@@ -7,12 +7,3 @@ export default function Message(props: MessageProps) {
         </li>
     );
 }
-
-type MessageProps = {
-    id: string,
-    author: UserData,
-    content: string,
-    createdAt: Date,
-    attachments: Array<string>
-    break: boolean
-};
