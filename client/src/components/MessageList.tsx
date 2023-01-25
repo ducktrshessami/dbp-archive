@@ -62,9 +62,10 @@ export default function MessageList(props: MessageListProps) {
     const channelSelected = !!props.channelId && !!props.page;
     const navigate = useNavigate();
     const [messageData, setMessagedata] = useState<Nullable<MessagesData>>(null);
+    const [fetchedChannel, setFetchedChannel] = useState<Nullable<string>>(null);
 
     useEffect(() => {
-        if (channelSelected && messageData === null) {
+        if (channelSelected && fetchedChannel !== props.channelId) {
             (async function () {
                 const page = parseInt(props.page!);
                 if (isNaN(page) || page.toString() !== props.page) {
@@ -74,6 +75,7 @@ export default function MessageList(props: MessageListProps) {
                 try {
                     const data = await getChannelPage(props.channelId!, page);
                     setMessagedata(data);
+                    setFetchedChannel(props.channelId!);
                 }
                 catch (err) {
                     console.error(err);
