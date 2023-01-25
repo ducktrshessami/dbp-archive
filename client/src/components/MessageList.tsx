@@ -6,6 +6,7 @@ import Message from "./Message";
 import PartialMessage from "./PartialMessage";
 import "./MessageList.css";
 import { MESSAGE_AGEBREAK } from "../utils/constants";
+import Notice from "./Notice";
 
 function renderMessageList(channelSelected: boolean, messageData: Nullable<MessagesData>) {
     switch (true) {
@@ -52,9 +53,7 @@ function renderMessageList(channelSelected: boolean, messageData: Nullable<Messa
             );
         default:
             return (
-                <div>
-
-                </div>
+                <Notice>Select a channel</Notice>
             );
     }
 }
