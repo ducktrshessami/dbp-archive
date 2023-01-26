@@ -1,3 +1,3 @@
 export default function attachmentUrl(filename: string): string {
-    return `/api/attachment/${filename}`;
+    return `/attachment/${filename}`;
 }
