@@ -10,7 +10,7 @@ import Notice from "./Notice";
 
 function renderMessageList(channelSelected: boolean, messageData: Nullable<MessagesData>) {
     switch (true) {
-        case !!messageData:
+        case channelSelected && !!messageData:
             const messages = messageData!.messages.map((message, i) => {
                 const createdAt = new Date(message.createdAt);
                 if (
