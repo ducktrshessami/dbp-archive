@@ -2,3 +2,13 @@
     display: inline-block;
     min-width: 75%;
 }
+
+.message>* {
+    display: inline-block;
+}
+
+.avatar {
+    height: 3rem;
+    border-radius: 3rem;
+    margin: 0 1.5ch;
+}
