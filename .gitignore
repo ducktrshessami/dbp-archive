@@ -103,10 +103,6 @@ dist
 # TernJS port file
 .tern-port
 
-# Sequelize Local files
-migrations/
-seeders/
-
 # Local data
 attachments/
 sqlite/
