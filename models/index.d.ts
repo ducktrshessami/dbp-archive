@@ -20,6 +20,7 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
 export class Channel extends Model<InferAttributes<Channel>, InferCreationAttributes<Channel>> {
     id: string;
     name: string;
+    hidden: CreationOptional<boolean>;
 
     Messages?: NonAttribute<Array<Message>>;
 }
@@ -28,13 +29,13 @@ export class Message extends Model<InferAttributes<Message>, InferCreationAttrib
     id: string;
     content: string;
     createdAt: Date;
+    break: CreationOptional<boolean>;
 
     UserId: ForeignKey<User["id"]>;
     User?: NonAttribute<User>;
     ChannelId: ForeignKey<Channel["id"]>;
     Channel?: NonAttribute<Channel>;
     Attachments?: NonAttribute<Array<Attachment>>;
-    Break?: NonAttribute<Break>;
 }
 
 export class Attachment extends Model<InferAttributes<Attachment>, InferCreationAttributes<Attachment>> {
@@ -42,12 +43,6 @@ export class Attachment extends Model<InferAttributes<Attachment>, InferCreation
     original: string;
 
     MessageId: ForeignKey<Message["id"]>;
-    Message?: NonAttribute<Message>;
-}
-
-export class Break extends Model<InferAttributes<Break>, InferCreationAttributes<Break>> {
-    MessageId: ForeignKey<Message["id"]>; // Both primary and foreign key
-
     Message?: NonAttribute<Message>;
 }
 
