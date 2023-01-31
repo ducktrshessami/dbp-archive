@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { Op } from "sequelize";
 import {
     Attachment,
     Channel,
@@ -40,6 +41,11 @@ router
 
 async function channelList(): Promise<Array<ChannelData>> {
     const models = <Array<CountedChannel>>await Channel.findAll({
+        where: {
+            hidden: {
+                [Op.not]: true
+            }
+        },
         attributes: [
             "id",
             "name",
