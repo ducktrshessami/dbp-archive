@@ -11,3 +11,12 @@
     text-decoration: none;
     font-weight: bold;
 }
+
+::-webkit-scrollbar {
+    width: 1.25ch;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #95A46B;
+    border-radius: 6px;
+}
