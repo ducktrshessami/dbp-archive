@@ -1,7 +1,6 @@
 import { Router } from "express";
 import {
     Attachment,
-    Break,
     Channel,
     Message,
     sequelize,
@@ -73,10 +72,6 @@ async function getChannelPage(channelId: string, pageIndex: number): Promise<Mes
             {
                 model: Attachment,
                 attributes: ["filename"]
-            },
-            {
-                model: Break,
-                attributes: ["MessageId"]
             }
         ]
     });
@@ -97,7 +92,7 @@ async function getChannelPage(channelId: string, pageIndex: number): Promise<Mes
             authorId: message.UserId,
             content: message.content,
             createdAt: message.createdAt.getTime(),
-            break: !!message.Break,
+            break: message.break,
             attachments: message.Attachments!.map(attachment => attachment.filename)
         });
         return data;
