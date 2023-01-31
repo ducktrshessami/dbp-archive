@@ -1,6 +1,6 @@
 .message-list {
     display: inline-block;
-    max-height: 91.5vh;
+    max-height: 91vh;
     flex: 1 1 auto;
     overflow-y: scroll;
 }
