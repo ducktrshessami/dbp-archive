@@ -3,6 +3,7 @@
     display: inline-block;
     width: 25%;
     padding-top: 0.75rem;
+    flex: 1 0 auto;
 }
 
 .channel-list ul {
