@@ -6,7 +6,7 @@ export default function Message(props: MessageProps) {
     return (
         <li className="message">
             <img className="avatar" src={props.author.avatarUrl} alt={`${tag}'s avatar`} />
-            <div>
+            <div className="content">
                 <span>{props.content}</span>
                 {renderAttachments(props.attachments)}
             </div>

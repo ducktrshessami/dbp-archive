@@ -5,6 +5,20 @@
     overflow-y: scroll;
 }
 
+.message {
+    margin: 0.25rem 0;
+    padding: 0.5rem 3ch;
+    display: flex;
+}
+
+.message:hover {
+    background-color: #32353B;
+}
+
+.message.partial {
+    padding: 0.25rem 0 0.25rem calc(3rem + 5ch);
+}
+
 .message>* {
     display: inline-block;
 }
@@ -12,5 +26,13 @@
 .avatar {
     height: 3rem;
     border-radius: 3rem;
-    margin: 0 1.5ch;
+    margin-right: 2ch;
+    flex: 0 1 auto;
+}
+
+.content {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    line-height: 1.25rem;
 }
