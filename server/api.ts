@@ -9,7 +9,6 @@ import {
 } from "../models";
 import { PAGE_LIMIT } from "./constants";
 
-const BASE_AVATAR_URL = "https://cdn.discordapp.com/";
 export const router = Router();
 
 router
@@ -59,8 +58,12 @@ async function channelList(): Promise<Array<ChannelData>> {
     }));
 }
 
-function avatarUrl(id: string, discriminator: string, hash?: string): string {
-    return BASE_AVATAR_URL + (hash ? `avatars/${id}/${hash}.png` : `embed/avatars/${parseInt(discriminator) % 5}.png`);
+function defaultAvatarUrl(discriminator: string): string {
+    return `https://cdn.discordapp.com/embed/avatars/${parseInt(discriminator) % 5}.png`;
+}
+
+function avatarUrl(user: User): string {
+    return user.avatarFilename ? `/avatar/${user.avatarFilename}` : defaultAvatarUrl(user.discriminator);
 }
 
 async function getChannelPage(channelId: string, pageIndex: number): Promise<MessagesData | null> {
@@ -90,7 +93,7 @@ async function getChannelPage(channelId: string, pageIndex: number): Promise<Mes
                 id: message.User!.id,
                 username: message.User!.username,
                 discriminator: message.User!.discriminator,
-                avatarUrl: avatarUrl(message.User!.id, message.User!.discriminator, message.User!.avatar)
+                avatarUrl: avatarUrl(message.User!)
             });
         }
         data[0].push({
