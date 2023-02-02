@@ -1,12 +1,20 @@
 import renderAttachments from "../utils/renderAttachments";
 import { MessageProps } from "./MessageProps";
 
+function widen(n: number, minDigits: number): string {
+    const raw = n.toString();
+    const zeroes = new Array<0>(Math.max(0, minDigits - raw.length))
+        .fill(0)
+        .join("");
+    return zeroes + raw;
+}
+
 function formatTimestamp(timestamp: Date): string {
     const month = timestamp.getMonth() + 1;
     const day = timestamp.getDate();
     const year = timestamp.getFullYear();
     const hour = timestamp.getHours();
-    const minute = timestamp.getMinutes();
+    const minute = widen(timestamp.getMinutes(), 2);
     const period = hour < 12 ? "AM" : "PM";
     let parsedHour: number;
     switch (true) {
