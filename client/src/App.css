@@ -13,8 +13,8 @@
 }
 
 ::-webkit-scrollbar {
-    width: 1.25ch;
-    height: 1.25ch;
+    width: 1ch;
+    height: 1ch;
 }
 
 ::-webkit-scrollbar-thumb {
