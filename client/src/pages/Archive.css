@@ -2,3 +2,8 @@
     flex: 1 0 auto;
     display: flex;
 }
+
+.archive>* {
+    display: inline-block;
+    overflow-y: scroll;
+}
