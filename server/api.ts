@@ -76,7 +76,7 @@ async function getChannelPage(channelId: string, pageIndex: number): Promise<Mes
         include: [
             {
                 model: User,
-                attributes: ["id", "username", "discriminator", "avatar"]
+                attributes: ["id", "username", "discriminator", "avatarFilename"]
             },
             {
                 model: Attachment,
