@@ -36,6 +36,20 @@ router
         res
             .status(200)
             .json(page);
+    })
+    .post("/api/break/:messageId", async (req, res) => {
+        if (!("value" in req.body)) {
+            res
+                .status(400)
+                .end();
+            return;
+        }
+        const [affected] = await Message.update({ break: !!req.body.value }, {
+            where: { id: req.params.messageId }
+        });
+        res
+            .status(affected ? 200 : 404)
+            .end();
     });
 
 async function channelList(): Promise<Array<ChannelData>> {
