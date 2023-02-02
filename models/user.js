@@ -27,7 +27,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    avatar: DataTypes.STRING
+    displayColor: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    avatarFilename: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'User',

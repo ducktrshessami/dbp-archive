@@ -13,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
       models.Message.belongsTo(models.User);
       models.Message.belongsTo(models.Channel);
       models.Message.hasMany(models.Attachment, { onDelete: "CASCADE" });
-      models.Message.hasOne(models.Break, { onDelete: "CASCADE" });
     }
   };
   Message.init({

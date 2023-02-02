@@ -12,7 +12,8 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
     id: string;
     username: string;
     discriminator: string;
-    avatar?: CreationOptional<string>;
+    displayColor: number;
+    avatarFilename?: CreationOptional<string>;
 
     Messages?: NonAttribute<Array<Message>>;
 }
