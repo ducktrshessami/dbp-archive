@@ -2,7 +2,8 @@ import { Router } from "express";
 import { existsSync } from "fs";
 import { join, resolve } from "path";
 
-const ATTACHMENTS_PATH = resolve(__dirname, "..", "attachments");
+const ASSETS_PATH = resolve(__dirname, "..", "assets");
+const ATTACHMENTS_PATH = join(ASSETS_PATH, "attachments");
 export const router = Router();
 
 router.get("/attachment/:filename", (req, res) => {
