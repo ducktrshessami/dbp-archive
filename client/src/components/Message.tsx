@@ -1,4 +1,4 @@
-import renderAttachments from "../utils/renderAttachments";
+import { renderAttachments, renderContent } from "../utils/renderMessage";
 import { MessageProps } from "./MessageProps";
 
 function widen(n: number, minDigits: number): string {
@@ -35,7 +35,7 @@ export default function Message(props: MessageProps) {
                     <span className="author" meta-author-id={props.author.id}>{props.author.username}#{props.author.discriminator}</span>
                     <span className="timestamp">{formatTimestamp(props.createdAt)}</span>
                 </div>
-                <span>{props.content}</span>
+                {renderContent(props.content)}
                 {renderAttachments(props.attachments)}
             </div>
         </li>

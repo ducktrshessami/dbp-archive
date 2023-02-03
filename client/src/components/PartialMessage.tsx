@@ -1,10 +1,10 @@
-import renderAttachments from "../utils/renderAttachments";
+import { renderAttachments, renderContent } from "../utils/renderMessage";
 import { PartialMessageProps } from "./MessageProps";
 
 export default function PartialMessage(props: PartialMessageProps) {
     return (
         <li className="message partial">
-            <span>{props.content}</span>
+            {renderContent(props.content)}
             {renderAttachments(props.attachments)}
         </li>
     );

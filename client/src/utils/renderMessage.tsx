@@ -1,6 +1,17 @@
 import attachmentUrl from "./attachmentUrl";
 
-export default function renderAttachments(attachments: Array<string>) {
+export function renderContent(content: string) {
+    if (content.length) {
+        return (
+            <span>{content}</span>
+        );
+    }
+    else {
+        return null;
+    }
+}
+
+export function renderAttachments(attachments: Array<string>) {
     if (attachments.length) {
         return attachments.map(attachment =>
             <img
