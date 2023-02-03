@@ -21,7 +21,7 @@ function renderChannelList(props: ChannelListProps) {
     }
     else {
         return (
-            <BeatLoader />
+            <BeatLoader color="#8A9A5B" />
         );
     }
 }

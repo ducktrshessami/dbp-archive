@@ -49,7 +49,7 @@ function renderMessageList(channelSelected: boolean, pageSelected: boolean, mess
             );
         case channelSelected:
             return (
-                <BeatLoader />
+                <BeatLoader color="#8A9A5B" />
             );
         default:
             return (
