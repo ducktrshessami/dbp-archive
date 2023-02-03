@@ -8,9 +8,9 @@ import "./MessageList.css";
 import { MESSAGE_AGEBREAK } from "../utils/constants";
 import Notice from "./Notice";
 
-function renderMessageList(channelSelected: boolean, messageData: Nullable<MessagesData>) {
+function renderMessageList(channelSelected: boolean, pageSelected: boolean, messageData: Nullable<MessagesData>) {
     switch (true) {
-        case channelSelected && !!messageData:
+        case channelSelected && pageSelected && !!messageData:
             const messages = messageData!.messages.map((message, i) => {
                 const createdAt = new Date(message.createdAt);
                 if (
@@ -59,13 +59,12 @@ function renderMessageList(channelSelected: boolean, messageData: Nullable<Messa
 }
 
 export default function MessageList(props: MessageListProps) {
-    const channelSelected = !!props.channelId && !!props.page;
     const navigate = useNavigate();
     const [messageData, setMessagedata] = useState<Nullable<MessagesData>>(null);
     const [fetchedChannel, setFetchedChannel] = useState<Nullable<string>>(null);
 
     useEffect(() => {
-        if (channelSelected && fetchedChannel !== props.channelId) {
+        if (props.channelId && props.page && fetchedChannel !== props.channelId) {
             (async function () {
                 const page = parseInt(props.page!);
                 if (isNaN(page) || page.toString() !== props.page) {
@@ -73,6 +72,7 @@ export default function MessageList(props: MessageListProps) {
                     return;
                 }
                 try {
+                    setMessagedata(null);
                     const data = await getChannelPage(props.channelId!, page);
                     setMessagedata(data);
                     setFetchedChannel(props.channelId!);
@@ -87,7 +87,7 @@ export default function MessageList(props: MessageListProps) {
 
     return (
         <div className="message-list">
-            {renderMessageList(channelSelected, messageData)}
+            {renderMessageList(!!props.channelId, !!props.page, messageData)}
         </div>
     );
 }
