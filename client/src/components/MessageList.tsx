@@ -49,7 +49,9 @@ function renderMessageList(channelSelected: boolean, pageSelected: boolean, mess
             );
         case channelSelected:
             return (
-                <BeatLoader color="#8A9A5B" />
+                <div className="centered-box">
+                    <BeatLoader color="#8A9A5B" size="1.5rem" />
+                </div>
             );
         default:
             return (
