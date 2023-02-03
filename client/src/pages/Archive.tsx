@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ChannelList from "../components/ChannelList";
-import MessageList from "../components/MessageList";
+import MessageList from "../components/MessageContainer";
 import { ChannelData, getChannels } from "../utils/api";
 import "./Archive.css";
 
