@@ -46,3 +46,8 @@
     color: #A3A6A0;
     font-size: 0.85rem;
 }
+
+.attachment {
+    max-width: 20vw;
+    max-height: 40vh;
+}
