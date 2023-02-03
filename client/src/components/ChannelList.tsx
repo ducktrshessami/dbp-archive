@@ -21,7 +21,9 @@ function renderChannelList(props: ChannelListProps) {
     }
     else {
         return (
-            <BeatLoader color="#8A9A5B" />
+            <div className="centered-box">
+                <BeatLoader color="#8A9A5B" size="1.25rem" />
+            </div>
         );
     }
 }
