@@ -4,6 +4,5 @@
 }
 
 .archive>* {
-    display: inline-block;
     overflow-y: scroll;
 }
