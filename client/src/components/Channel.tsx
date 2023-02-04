@@ -4,7 +4,7 @@ import "./Channel.css";
 export default function Channel(props: ChannelProps) {
     return (
         <li className={props.selected ? "channel selected" : "channel"}>
-            <Link className="channel-link" to={`/${props.id}`}># {props.name}</Link>
+            <Link className="channel-link" to={props.selected ? "#" : `/${props.id}`}># {props.name}</Link>
         </li>
     );
 }
