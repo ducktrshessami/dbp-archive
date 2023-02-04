@@ -1,58 +1,6 @@
 .message-container {
     max-height: calc(100vh - 5rem);
     flex: 1 1 auto;
-}
-
-.message {
-    margin: 0.25rem 0;
-    padding: 0.5rem 3ch;
     display: flex;
-}
-
-.message:hover {
-    background-color: #32353B;
-}
-
-.message.partial {
-    padding: 0.25rem 0 0.25rem calc(3rem + 5ch);
-}
-
-.message>* {
-    display: inline-block;
-}
-
-.avatar {
-    height: 3rem;
-    border-radius: 3rem;
-    margin-right: 2ch;
-    flex: 0 1 auto;
-}
-
-.content {
-    flex: 1 1 auto;
-    line-height: 1.25rem;
-}
-
-.content>*, .message.partial>* {
-    display: block;
-}
-
-.content-header {
-    margin-bottom: 0.4rem;
-}
-
-.author {
-    font-weight: 500;
-    margin-right: 1ch;
-}
-
-.timestamp {
-    color: #A3A6A0;
-    font-size: 0.85rem;
-}
-
-.attachment {
-    max-width: 20vw;
-    max-height: 40vh;
-    margin-right: 0.75ch;
+    flex-direction: column;
 }
