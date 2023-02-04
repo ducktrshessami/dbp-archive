@@ -60,7 +60,7 @@ function renderMessageList(channelSelected: boolean, ready: boolean, messageData
     }
 }
 
-export default function MessageList(props: MessageContainerProps) {
+export default function MessageContainer(props: MessageContainerProps) {
     const navigate = useNavigate();
     const [messageData, setMessagedata] = useState<Nullable<MessagesData>>(null);
     const [fetchedChannel, setFetchedChannel] = useState<Nullable<string>>(null);
@@ -91,7 +91,7 @@ export default function MessageList(props: MessageContainerProps) {
     });
 
     return (
-        <div className="message-list">
+        <div className="message-container">
             {renderMessageList(!!props.channelId, ready, messageData)}
         </div>
     );
