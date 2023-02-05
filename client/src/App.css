@@ -18,6 +18,10 @@
     align-items: center;
 }
 
+[role=button] {
+    cursor: pointer;
+}
+
 ::-webkit-scrollbar {
     width: 1ch;
     height: 1ch;
