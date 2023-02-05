@@ -16,6 +16,7 @@ function renderPagination(navigate: NavigateFunction, props: MessagePaginationPr
                 ariaLabelBuilder={i => `Page ${i}`}
                 previousLabel="ᐸ"
                 nextLabel="ᐳ"
+                hrefBuilder={i => `/${props.channelId}/${i}`}
                 onPageChange={({ selected }) => navigate(`/${props.channelId}/${selected + 1}`)}
             />
         );
