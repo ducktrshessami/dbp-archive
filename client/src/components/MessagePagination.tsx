@@ -32,13 +32,14 @@ function renderPagination(navigate: NavigateFunction, props: MessagePaginationPr
 export default function MessagePagination(props: MessagePaginationProps) {
     const navigate = useNavigate();
     return (
-        <div className="message-pagination">
+        <div className={props.top ? "message-pagination top" : "message-pagination bottom"}>
             {renderPagination(navigate, props)}
         </div>
     );
 }
 
 export type MessagePaginationProps = {
+    top: boolean
     page?: Nullable<number>,
     pageCount?: Nullable<number>,
     channelId?: Nullable<string>
