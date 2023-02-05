@@ -1,12 +1,23 @@
+import ReactPaginate from "react-paginate";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import { BeatLoader } from "react-spinners";
 import "./MessagePagination.css";
 
-function renderPagination(page?: Nullable<number>, pageCount?: Nullable<number>) {
-    if (page && pageCount) {
+function renderPagination(navigate: NavigateFunction, props: MessagePaginationProps) {
+    if (props.page && props.pageCount) {
         return (
-            <div>
-
-            </div>
+            <ReactPaginate
+                className="centered-box"
+                forcePage={props.page - 1}
+                pageCount={props.pageCount}
+                pageClassName="page"
+                pageLinkClassName="page-link"
+                activeClassName="selected"
+                ariaLabelBuilder={i => `Page ${i}`}
+                previousLabel="ᐸ"
+                nextLabel="ᐳ"
+                onPageChange={({ selected }) => navigate(`/${props.channelId}/${selected + 1}`)}
+            />
         );
     }
     else {
@@ -19,14 +30,16 @@ function renderPagination(page?: Nullable<number>, pageCount?: Nullable<number>)
 }
 
 export default function MessagePagination(props: MessagePaginationProps) {
+    const navigate = useNavigate();
     return (
         <div className="message-pagination">
-            {renderPagination(props.page, props.pageCount)}
+            {renderPagination(navigate, props)}
         </div>
     );
 }
 
-type MessagePaginationProps = {
+export type MessagePaginationProps = {
     page?: Nullable<number>,
-    pageCount?: Nullable<number>
+    pageCount?: Nullable<number>,
+    channelId?: Nullable<string>
 };
