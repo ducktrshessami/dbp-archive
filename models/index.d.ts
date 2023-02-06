@@ -26,6 +26,12 @@ export class Channel extends Model<InferAttributes<Channel>, InferCreationAttrib
     Messages?: NonAttribute<Array<Message>>;
 }
 
+export class Emoji extends Model<InferAttributes<Emoji>, InferCreationAttributes<Emoji>> {
+    id: string;
+    name: string;
+    filename: string;
+}
+
 export class Message extends Model<InferAttributes<Message>, InferCreationAttributes<Message>> {
     id: string;
     content: string;
