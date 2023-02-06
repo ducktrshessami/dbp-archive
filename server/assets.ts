@@ -6,6 +6,7 @@ import { User } from "../models";
 const ASSETS_PATH = resolve(__dirname, "..", "assets");
 const ATTACHMENTS_PATH = join(ASSETS_PATH, "attachments");
 const AVATARS_PATH = join(ASSETS_PATH, "avatars");
+const EMOJIS_PATH = join(ASSETS_PATH, "emojis");
 export const router = Router();
 
 router
@@ -24,6 +25,19 @@ router
     })
     .get("/avatar/:filename", (req, res) => {
         const filepath = join(AVATARS_PATH, req.params.filename);
+        if (existsSync(filepath)) {
+            res
+                .status(200)
+                .sendFile(filepath);
+        }
+        else {
+            res
+                .status(404)
+                .end();
+        }
+    })
+    .get("/emoji/:filename", (req, res) => {
+        const filepath = join(EMOJIS_PATH, req.params.filename);
         if (existsSync(filepath)) {
             res
                 .status(200)
