@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { existsSync } from "fs";
 import { join, resolve } from "path";
-import { User } from "../models";
+import { Emoji, User } from "../models";
 
 const ASSETS_PATH = resolve(__dirname, "..", "assets");
 const ATTACHMENTS_PATH = join(ASSETS_PATH, "attachments");
@@ -55,6 +55,18 @@ router
         });
         const style = users
             .map(user => `.author[meta-author-id="${user.id}"]{color:${hex(user.displayColor)};}`)
+            .join("");
+        res
+            .status(200)
+            .contentType("text/css")
+            .send(style);
+    })
+    .get("/emojis.css", async (_, res) => {
+        const emojis = await Emoji.findAll({
+            attributes: ["id", "filename"]
+        });
+        const style = emojis
+            .map(emoji => `.emoji[meta-emoji-id="${emoji.id}"]{content:url("/emoji/${emoji.filename}");}`)
             .join("");
         res
             .status(200)
