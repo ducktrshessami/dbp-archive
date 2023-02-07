@@ -23,20 +23,20 @@ function createPostJsonOptions(body: any): RequestInit {
     };
 }
 
-export async function getChannels(): Promise<Array<ChannelData>> {
-    return await fetchJson("/api/channels");
+export async function getResolvedData(): Promise<ResolvedData> {
+    return await fetchJson("/api/resolved");
 }
 
-export async function getChannelPage(channelId: string, page: number): Promise<MessagesData> {
-    const rawData: RawMessagesData = await fetchJson(`/api/channel/${channelId}/${page}`);
-    return {
-        messages: rawData.messages,
-        users: new Map<string, UserData>(rawData.users.map(user => [user.id, user]))
-    };
+export async function getChannelPage(channelId: string, page: number): Promise<Array<MessageData>> {
+    return await fetchJson(`/api/channel/${channelId}/${page}`);
 }
 
 export async function setMessageBreak(messageId: string, value: boolean): Promise<void> {
     await fetchWrapped(`/api/break/${messageId}`, createPostJsonOptions({ value }));
+}
+
+export async function setChannelHidden(channelId: string, value: boolean): Promise<void> {
+    await fetchWrapped(`/api/hidden/${channelId}`, createPostJsonOptions({ value }));
 }
 
 export type ChannelData = {
@@ -61,12 +61,7 @@ export type UserData = {
     avatarUrl: string
 };
 
-type RawMessagesData = {
-    messages: Array<MessageData>,
+export type ResolvedData = {
+    channels: Array<ChannelData>,
     users: Array<UserData>
-};
-
-export type MessagesData = {
-    messages: Array<MessageData>,
-    users: Map<string, UserData>
 };
