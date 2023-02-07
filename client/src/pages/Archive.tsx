@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ChannelList from "../components/ChannelList";
 import MessageContainer from "../components/MessageContainer";
-import { ChannelData, getChannels } from "../utils/api";
+import { getResolvedData, ResolvedData } from "../utils/api";
 import "./Archive.css";
 
 export default function Archive() {
@@ -10,7 +10,7 @@ export default function Archive() {
     let page: Nullable<string> = null;
     const location = useLocation();
     const navigate = useNavigate();
-    const [channels, setChannels] = useState<Nullable<Array<ChannelData>>>(null);
+    const [resolvedData, setResolvedData] = useState<Nullable<ResolvedData>>(null);
     const [pageCount, setPageCount] = useState<Nullable<number>>(null);
     const hasRoute = /^\/.+$/.test(location.pathname);
 
@@ -21,12 +21,12 @@ export default function Archive() {
     }
 
     useEffect(() => {
-        if (channels === null) {
-            getChannels()
-                .then(setChannels);
+        if (resolvedData === null) {
+            getResolvedData()
+                .then(setResolvedData);
         }
         else if (channelId) {
-            const selected = channels.find(channel => channel.id === channelId);
+            const selected = resolvedData.channels.find(channel => channel.id === channelId);
             setPageCount(selected?.pages ?? null);
         }
         if (channelId && !page) {
@@ -35,11 +35,11 @@ export default function Archive() {
         else if (hasRoute && !channelId && !page) {
             navigate("/", { replace: true });
         }
-    }, [channels, channelId, page, hasRoute, navigate]);
+    });
 
     return (
         <main className="archive">
-            <ChannelList channels={channels} selected={channelId} />
+            <ChannelList channels={resolvedData?.channels} selected={channelId} />
             <MessageContainer channelId={channelId} page={page} pageCount={pageCount} />
         </main>
     );
