@@ -30,7 +30,7 @@ export default function Archive() {
         else if (hasRoute && !channelId && !page) {
             navigate("/", { replace: true });
         }
-    });
+    }, [resolvedData, channelId, page, hasRoute, navigate]);
 
     return (
         <main className="archive">
