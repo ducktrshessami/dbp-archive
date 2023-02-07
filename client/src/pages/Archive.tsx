@@ -11,7 +11,6 @@ export default function Archive() {
     const location = useLocation();
     const navigate = useNavigate();
     const [resolvedData, setResolvedData] = useState<Nullable<ResolvedData>>(null);
-    const [pageCount, setPageCount] = useState<Nullable<number>>(null);
     const hasRoute = /^\/.+$/.test(location.pathname);
 
     if (hasRoute) {
@@ -25,10 +24,6 @@ export default function Archive() {
             getResolvedData()
                 .then(setResolvedData);
         }
-        else if (channelId) {
-            const selected = resolvedData.channels.find(channel => channel.id === channelId);
-            setPageCount(selected?.pages ?? null);
-        }
         if (channelId && !page) {
             navigate(`/${channelId}/1`, { replace: true });
         }
@@ -40,7 +35,7 @@ export default function Archive() {
     return (
         <main className="archive">
             <ChannelList channels={resolvedData?.channels} selected={channelId} />
-            <MessageContainer channelId={channelId} page={page} pageCount={pageCount} />
+            <MessageContainer resolved={resolvedData} channelId={channelId} page={page} />
         </main>
     );
 }

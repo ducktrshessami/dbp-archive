@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getChannelPage, MessagesData } from "../utils/api";
+import {
+    getChannelPage,
+    MessageData,
+    ResolvedData
+} from "../utils/api";
 import MessageList from "./MessageList";
 import MessagePagination, { MessagePaginationProps } from "./MessagePagination";
 import "./MessageContainer.css";
@@ -23,15 +27,14 @@ function renderMessagePagination(channelSelected: boolean, props: MessagePaginat
 
 export default function MessageContainer(props: MessageContainerProps) {
     const navigate = useNavigate();
-    const [messageData, setMessagedata] = useState<Nullable<MessagesData>>(null);
-    const [fetchedChannel, setFetchedChannel] = useState<Nullable<string>>(null);
-    const [fetchedPage, setFetchedPage] = useState<Nullable<number>>(null);
+    const [fetchedData, setFetchedData] = useState<Nullable<FetchedData>>(null);
+    const selectedChannel = props.resolved?.channels.find(channel => channel.id === props.channelId);
     const channelSelected = !!props.channelId;
     const page = parseInt(props.page!);
-    const ready = fetchedChannel === props.channelId && fetchedPage === page;
+    const ready = fetchedData?.channelId === props.channelId && fetchedData?.page === page;
     const paginationProps: Omit<MessagePaginationProps, "top"> = {
         page,
-        pageCount: props.pageCount,
+        pageCount: selectedChannel?.pages,
         channelId: props.channelId
     };
 
@@ -39,7 +42,7 @@ export default function MessageContainer(props: MessageContainerProps) {
         if (
             props.channelId &&
             props.page &&
-            (fetchedChannel !== props.channelId || fetchedPage !== page)
+            (fetchedData?.channelId !== props.channelId || fetchedData?.page !== page)
         ) {
             (async function () {
                 if (isNaN(page) || page.toString() !== props.page) {
@@ -47,11 +50,13 @@ export default function MessageContainer(props: MessageContainerProps) {
                     return;
                 }
                 try {
-                    setMessagedata(null);
+                    setFetchedData(null);
                     const data = await getChannelPage(props.channelId!, page);
-                    setFetchedChannel(props.channelId!);
-                    setFetchedPage(page);
-                    setMessagedata(data);
+                    setFetchedData({
+                        page,
+                        channelId: props.channelId,
+                        messages: data
+                    });
                 }
                 catch (err) {
                     console.error(err);
@@ -70,7 +75,7 @@ export default function MessageContainer(props: MessageContainerProps) {
             <MessageList
                 channelSelected={channelSelected}
                 ready={ready}
-                messageData={messageData}
+                messageData={fetchedData?.messages}
             />
             {renderMessagePagination(channelSelected, {
                 ...paginationProps,
@@ -81,7 +86,13 @@ export default function MessageContainer(props: MessageContainerProps) {
 }
 
 type MessageContainerProps = {
+    resolved?: Nullable<ResolvedData>,
     channelId?: Nullable<string>,
-    page?: Nullable<string>,
-    pageCount?: Nullable<number>
+    page?: Nullable<string>
+};
+
+type FetchedData = {
+    channelId?: Nullable<string>,
+    page?: Nullable<number>,
+    messages?: Nullable<Array<MessageData>>
 };
