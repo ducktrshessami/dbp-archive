@@ -5,7 +5,7 @@ import {
     MessageData,
     ResolvedData
 } from "../utils/api";
-import MessageList from "./MessageList";
+import MessageList, { ResolvedMessageData } from "./MessageList";
 import MessagePagination, { MessagePaginationProps } from "./MessagePagination";
 import "./MessageContainer.css";
 
@@ -31,11 +31,17 @@ export default function MessageContainer(props: MessageContainerProps) {
     const selectedChannel = props.resolved?.channels.find(channel => channel.id === props.channelId);
     const channelSelected = !!props.channelId;
     const page = parseInt(props.page!);
-    const ready = fetchedData?.channelId === props.channelId && fetchedData?.page === page;
+    const ready = !!props.resolved &&
+        fetchedData?.channelId === props.channelId &&
+        fetchedData?.page === page;
     const paginationProps: Omit<MessagePaginationProps, "top"> = {
         page,
         pageCount: selectedChannel?.pages,
         channelId: props.channelId
+    };
+    const resolvedData: ResolvedMessageData = {
+        ...props.resolved,
+        messages: fetchedData?.messages
     };
 
     useEffect(() => {
@@ -75,7 +81,7 @@ export default function MessageContainer(props: MessageContainerProps) {
             <MessageList
                 channelSelected={channelSelected}
                 ready={ready}
-                messageData={fetchedData?.messages}
+                resolved={resolvedData}
             />
             {renderMessagePagination(channelSelected, {
                 ...paginationProps,

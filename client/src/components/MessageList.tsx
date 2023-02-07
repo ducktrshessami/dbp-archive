@@ -1,27 +1,31 @@
 import { BeatLoader } from "react-spinners";
-import { MessagesData } from "../utils/api";
+import {
+    ChannelData,
+    MessageData,
+    UserData
+} from "../utils/api";
 import { MESSAGE_AGEBREAK } from "../utils/constants";
 import Message from "./Message";
 import Notice from "./Notice";
 import PartialMessage from "./PartialMessage";
 import "./MessageList.css";
 
-function renderMessageList(channelSelected: boolean, ready: boolean, messageData: Nullable<MessagesData>) {
+function renderMessageList(channelSelected: boolean, ready: boolean, resolved: ResolvedMessageData) {
     switch (true) {
-        case channelSelected && ready && !!messageData:
-            const messages = messageData!.messages.map((message, i) => {
+        case channelSelected && ready && !!resolved.messages:
+            const messages = resolved.messages!.map((message, i) => {
                 const createdAt = new Date(message.createdAt);
                 if (
                     message.break ||
                     i === 0 ||
-                    message.authorId !== messageData!.messages[i - 1].authorId ||
-                    (message.createdAt - messageData!.messages[i - 1].createdAt) >= MESSAGE_AGEBREAK
+                    message.authorId !== resolved.messages![i - 1].authorId ||
+                    (message.createdAt - resolved.messages![i - 1].createdAt) >= MESSAGE_AGEBREAK
                 ) {
                     return (
                         <Message
                             key={message.id}
                             id={message.id}
-                            author={messageData!.users.get(message.authorId)!}
+                            author={resolved.users!.get(message.authorId)!}
                             content={message.content}
                             createdAt={createdAt}
                             attachments={message.attachments}
@@ -61,13 +65,19 @@ function renderMessageList(channelSelected: boolean, ready: boolean, messageData
 export default function MessageList(props: MessageListProps) {
     return (
         <div className="message-list">
-            {renderMessageList(props.channelSelected, props.ready, props.messageData)}
+            {renderMessageList(props.channelSelected, props.ready, props.resolved)}
         </div>
     );
 }
 
+export type ResolvedMessageData = {
+    channels?: Nullable<Array<ChannelData>>,
+    users?: Nullable<Map<string, UserData>>,
+    messages?: Nullable<Array<MessageData>>
+};
+
 type MessageListProps = {
     channelSelected: boolean,
     ready: boolean,
-    messageData: Nullable<MessagesData>
+    resolved: ResolvedMessageData
 };
