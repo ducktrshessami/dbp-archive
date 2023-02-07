@@ -12,6 +12,12 @@ import { PAGE_LIMIT } from "./constants";
 export const router = Router();
 
 router
+    .get("/api/users", async (_, res) => {
+        const users = await userList();
+        res
+            .status(200)
+            .json(users);
+    })
     .get("/api/channels", async (_, res) => {
         const channels = await channelList();
         res
@@ -51,6 +57,18 @@ router
             .status(affected ? 200 : 404)
             .end();
     });
+
+async function userList(): Promise<Array<UserData>> {
+    const models = await User.findAll({
+        attributes: ["id", "username", "discriminator", "avatarFilename"]
+    });
+    return models.map(model => ({
+        id: model.id,
+        username: model.username,
+        discriminator: model.discriminator,
+        avatarUrl: avatarUrl(model)
+    }));
+}
 
 async function channelList(): Promise<Array<ChannelData>> {
     const models = <Array<CountedChannel>>await Channel.findAll({
