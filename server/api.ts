@@ -110,50 +110,29 @@ function avatarUrl(user: User): string {
     return user.avatarFilename ? `/avatar/${user.avatarFilename}` : defaultAvatarUrl(user.discriminator);
 }
 
-async function getChannelPage(channelId: string, pageIndex: number): Promise<MessagesData | null> {
+async function getChannelPage(channelId: string, pageIndex: number): Promise<Array<MessageData> | null> {
     const messages = await Message.findAll({
         where: { ChannelId: channelId },
         attributes: ["id", "content", "createdAt", "UserId"],
         order: [["createdAt", "ASC"]],
         limit: PAGE_LIMIT,
         offset: pageIndex * PAGE_LIMIT,
-        include: [
-            {
-                model: User,
-                attributes: ["id", "username", "discriminator", "avatarFilename"]
-            },
-            {
-                model: Attachment,
-                attributes: ["filename"]
-            }
-        ]
+        include: {
+            model: Attachment,
+            attributes: ["filename"]
+        }
     });
     if (!messages.length) {
         return null;
     }
-    const [messageData, userCollection] = messages.reduce((data: [Array<MessageData>, Map<string, UserData>], message) => {
-        if (!data[1].has(message.User!.id)) {
-            data[1].set(message.User!.id, {
-                id: message.User!.id,
-                username: message.User!.username,
-                discriminator: message.User!.discriminator,
-                avatarUrl: avatarUrl(message.User!)
-            });
-        }
-        data[0].push({
-            id: message.id,
-            authorId: message.UserId,
-            content: message.content,
-            createdAt: message.createdAt.getTime(),
-            break: message.break,
-            attachments: message.Attachments!.map(attachment => attachment.filename)
-        });
-        return data;
-    }, [new Array<MessageData>(), new Map<string, UserData>()]);
-    return {
-        messages: messageData,
-        users: Array.from(userCollection.values())
-    };
+    return messages.map(message => ({
+        id: message.id,
+        authorId: message.UserId,
+        content: message.content,
+        createdAt: message.createdAt.getTime(),
+        break: message.break,
+        attachments: message.Attachments!.map(attachment => attachment.filename)
+    }));
 }
 
 interface CountedMessages {
@@ -182,11 +161,6 @@ type UserData = {
     username: string,
     discriminator: string,
     avatarUrl: string
-};
-
-type MessagesData = {
-    messages: Array<MessageData>,
-    users: Array<UserData>
 };
 
 type ResolvedData = {
