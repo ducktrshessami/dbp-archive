@@ -24,7 +24,11 @@ function createPostJsonOptions(body: any): RequestInit {
 }
 
 export async function getResolvedData(): Promise<ResolvedData> {
-    return await fetchJson("/api/resolved");
+    const rawData: RawResolvedData = await fetchJson("/api/resolved");
+    return {
+        channels: rawData.channels,
+        users: new Map<string, UserData>(rawData.users.map(user => [user.id, user]))
+    };
 }
 
 export async function getChannelPage(channelId: string, page: number): Promise<Array<MessageData>> {
@@ -61,7 +65,12 @@ export type UserData = {
     avatarUrl: string
 };
 
-export type ResolvedData = {
+type RawResolvedData = {
     channels: Array<ChannelData>,
     users: Array<UserData>
+};
+
+export type ResolvedData = {
+    channels: Array<ChannelData>,
+    users: Map<string, UserData>
 };
