@@ -12,17 +12,15 @@ import { PAGE_LIMIT } from "./constants";
 export const router = Router();
 
 router
-    .get("/api/users", async (_, res) => {
-        const users = await userList();
+    .get("/api/resolved", async (_, res) => {
+        const [channels, users] = await Promise.all([
+            channelList(),
+            userList()
+        ]);
+        const data: ResolvedData = { channels, users };
         res
             .status(200)
-            .json(users);
-    })
-    .get("/api/channels", async (_, res) => {
-        const channels = await channelList();
-        res
-            .status(200)
-            .json(channels);
+            .json(data);
     })
     .get("/api/channel/:channelId/:page", async (req, res) => {
         const pageNumber = parseInt(req.params.page);
@@ -174,5 +172,10 @@ type UserData = {
 
 type MessagesData = {
     messages: Array<MessageData>,
+    users: Array<UserData>
+};
+
+type ResolvedData = {
+    channels: Array<ChannelData>,
     users: Array<UserData>
 };
