@@ -1,4 +1,5 @@
 import { renderAttachments, renderContent } from "../utils/renderMessage";
+import userTag from "../utils/userTag";
 import { MessageProps } from "./MessageProps";
 
 function widen(n: number, minDigits: number): string {
@@ -26,13 +27,13 @@ function formatTimestamp(timestamp: Date): string {
 }
 
 export default function Message(props: MessageProps) {
-    const tag = `${props.author.username}#${props.author.discriminator}`;
+    const tag = userTag(props.author);
     return (
         <li className="message">
             <img className="avatar" src={props.author.avatarUrl} alt={`${tag}'s avatar`} />
             <div className="content">
                 <div className="content-header">
-                    <span className="author" meta-author-id={props.author.id}>{props.author.username}#{props.author.discriminator}</span>
+                    <span className="author" meta-author-id={props.author.id}>{tag}</span>
                     <span className="timestamp">{formatTimestamp(props.createdAt)}</span>
                 </div>
                 {renderContent(props.content)}
