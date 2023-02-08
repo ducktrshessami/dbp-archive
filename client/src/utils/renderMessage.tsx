@@ -3,21 +3,9 @@ import Emoji from "../components/Emoji";
 import attachmentUrl from "./attachmentUrl";
 
 function parseEmojis(content: string) {
-    const idPattern = /^<?(a)?:?\w{2,32}:(?<id>\d{17,19})>?$/;
-    const initialMatch = content.match(idPattern);
-    if (initialMatch) {
-        return (
-            <Emoji id={initialMatch.groups!.id} solo={true} />
-        );
-    }
-    else {
-        return reactStringReplace(content, /(<?(a)?:?\w{2,32}:\d{17,19}>?)/g, match => {
-            const groupedMatch = match.match(idPattern)!;
-            return (
-                <Emoji id={groupedMatch.groups!.id} solo={false} />
-            );
-        });
-    }
+    return reactStringReplace(content, /<?(a)?:?\w{2,32}:(?<id>\d{17,19})>?/, match => (
+        <Emoji id={match.groups!.id} solo={match[0].length === content.length} />
+    ));
 }
 
 function parseContent(content: string) {
