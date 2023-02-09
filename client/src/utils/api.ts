@@ -27,7 +27,7 @@ function createPostJsonOptions(body: any): RequestInit {
 export async function getResolvedData(): Promise<ResolvedData> {
     const rawData: RawResolvedData = await fetchJson("/api/resolved");
     return {
-        channels: rawData.channels,
+        channels: fromArray(rawData.channels),
         users: fromArray(rawData.users)
     };
 }
@@ -72,6 +72,6 @@ type RawResolvedData = {
 };
 
 export type ResolvedData = {
-    channels: Array<ChannelData>,
+    channels: Map<string, ChannelData>,
     users: Map<string, UserData>
 };

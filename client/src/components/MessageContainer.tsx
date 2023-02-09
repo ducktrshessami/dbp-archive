@@ -29,7 +29,7 @@ function renderMessagePagination(channelSelected: boolean, props: MessagePaginat
 export default function MessageContainer(props: MessageContainerProps) {
     const navigate = useNavigate();
     const [fetchedData, setFetchedData] = useState<Nullable<FetchedData>>(null);
-    const selectedChannel = props.resolved?.channels.find(channel => channel.id === props.channelId);
+    const selectedChannel = props.resolved?.channels.get(props.channelId!);
     const channelSelected = !!props.channelId;
     const page = parseInt(props.page!);
     const ready = !!props.resolved &&

@@ -1,11 +1,12 @@
 import { BeatLoader } from "react-spinners";
 import { ChannelData } from "../utils/api";
+import { mapMap } from "../utils/mapUtils";
 import Channel from "./Channel";
 import "./ChannelList.css";
 
 function renderChannelList(props: ChannelListProps) {
     if (props.channels) {
-        const channels = props.channels.map(channel =>
+        const channels = mapMap(props.channels, channel =>
             <Channel
                 key={channel.id}
                 id={channel.id}
@@ -37,6 +38,6 @@ export default function ChannelList(props: ChannelListProps) {
 }
 
 type ChannelListProps = {
-    channels?: Nullable<Array<ChannelData>>,
+    channels?: Nullable<Map<string, ChannelData>>,
     selected?: Nullable<string>
 };
