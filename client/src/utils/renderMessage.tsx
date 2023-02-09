@@ -11,7 +11,7 @@ import {
 import attachmentUrl from "./attachmentUrl";
 import userTag from "./userTag";
 
-function parseEmojis(content: ParsableContent) {
+function parseEmojis(content: string) {
     return reactStringReplace(content, /<?(a)?:?\w{2,32}:(?<id>\d{17,19})>?/, match => (
         <Emoji id={match.groups!.id} solo={match[0].length === content.length} />
     ));
@@ -47,17 +47,15 @@ function parseRoleMentions(content: ParsableContent, roles?: Nullable<Map<string
 }
 
 function parseContent(content: string, resolved: ResolvedMessageData) {
-    return parseEmojis(
-        parseRoleMentions(
-            parseChannelMentions(
-                parseUserMentions(
-                    content,
-                    resolved.users
-                ),
-                resolved.channels
+    return parseRoleMentions(
+        parseChannelMentions(
+            parseUserMentions(
+                parseEmojis(content),
+                resolved.users
             ),
-            resolved.roles
-        )
+            resolved.channels
+        ),
+        resolved.roles
     );
 }
 
