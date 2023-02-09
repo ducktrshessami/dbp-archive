@@ -27,16 +27,17 @@ function formatTimestamp(timestamp: Date): string {
 }
 
 export default function Message(props: MessageProps) {
-    const tag = userTag(props.author);
+    const author = props.resolved.users?.get(props.authorId);
+    const tag = userTag(author);
     return (
         <li className="message">
-            <img className="avatar" src={props.author.avatarUrl} alt={`${tag}'s avatar`} />
+            <img className="avatar" src={author?.avatarUrl} alt={`${tag}'s avatar`} />
             <div className="content">
                 <div className="content-header">
-                    <span className="author" meta-author-id={props.author.id}>{tag}</span>
+                    <span className="author" meta-author-id={props.authorId}>{tag}</span>
                     <span className="timestamp">{formatTimestamp(props.createdAt)}</span>
                 </div>
-                {renderContent(props.content)}
+                {renderContent(props.content, props.resolved)}
                 {renderAttachments(props.attachments)}
             </div>
         </li>

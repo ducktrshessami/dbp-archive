@@ -1,33 +1,34 @@
+import { ReactNode } from "react";
 import reactStringReplace from "react-string-replace";
 import Emoji from "../components/Emoji";
 import Mention from "../components/Mention";
-import { UserData } from "./api";
+import { ChannelData, MessageData, UserData } from "./api";
 import attachmentUrl from "./attachmentUrl";
 import userTag from "./userTag";
 
-function parseEmojis(content: string) {
+function parseEmojis(content: ParsableContent) {
     return reactStringReplace(content, /<?(a)?:?\w{2,32}:(?<id>\d{17,19})>?/, match => (
         <Emoji id={match.groups!.id} solo={match[0].length === content.length} />
     ));
 }
 
-function parseUserMentions(content: string, users: Map<string, UserData> = new Map<string, UserData>()) {
+function parseUserMentions(content: ParsableContent, users?: Nullable<Map<string, UserData>>) {
     return reactStringReplace(content, /<@!?(?<id>\d{17,19})>/, match => {
-        const tag = userTag(users.get(match.groups!.id));
+        const tag = userTag(users?.get(match.groups!.id));
         return (
             <Mention>@{tag}</Mention>
         );
     });
 }
 
-function parseContent(content: string) {
-    return parseEmojis(content);
+function parseContent(content: string, resolved: ResolvedMessageData) {
+    return parseEmojis(parseUserMentions(content, resolved?.users));
 }
 
-export function renderContent(content: string) {
+export function renderContent(content: string, resolved: ResolvedMessageData) {
     if (content.length) {
         return (
-            <span>{parseContent(content)}</span>
+            <span>{parseContent(content, resolved)}</span>
         );
     }
     else {
@@ -50,3 +51,11 @@ export function renderAttachments(attachments: Array<string>) {
         return null;
     }
 }
+
+export type ResolvedMessageData = {
+    channels?: Nullable<Array<ChannelData>>,
+    users?: Nullable<Map<string, UserData>>,
+    messages?: Nullable<Array<MessageData>>
+};
+
+type ParsableContent = string | ReactNode[];

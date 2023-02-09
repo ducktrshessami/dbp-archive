@@ -1,14 +1,10 @@
 import { BeatLoader } from "react-spinners";
-import {
-    ChannelData,
-    MessageData,
-    UserData
-} from "../utils/api";
 import { MESSAGE_AGEBREAK } from "../utils/constants";
 import Message from "./Message";
 import Notice from "./Notice";
 import PartialMessage from "./PartialMessage";
 import "./MessageList.css";
+import { ResolvedMessageData } from "../utils/renderMessage";
 
 function renderMessageList(channelSelected: boolean, ready: boolean, resolved: ResolvedMessageData) {
     switch (true) {
@@ -25,10 +21,11 @@ function renderMessageList(channelSelected: boolean, ready: boolean, resolved: R
                         <Message
                             key={message.id}
                             id={message.id}
-                            author={resolved.users!.get(message.authorId)!}
+                            authorId={message.authorId}
                             content={message.content}
                             createdAt={createdAt}
                             attachments={message.attachments}
+                            resolved={resolved}
                         />
                     );
                 }
@@ -40,6 +37,7 @@ function renderMessageList(channelSelected: boolean, ready: boolean, resolved: R
                             content={message.content}
                             createdAt={createdAt}
                             attachments={message.attachments}
+                            resolved={resolved}
                         />
                     );
                 }
@@ -69,12 +67,6 @@ export default function MessageList(props: MessageListProps) {
         </div>
     );
 }
-
-export type ResolvedMessageData = {
-    channels?: Nullable<Array<ChannelData>>,
-    users?: Nullable<Map<string, UserData>>,
-    messages?: Nullable<Array<MessageData>>
-};
 
 type MessageListProps = {
     channelSelected: boolean,

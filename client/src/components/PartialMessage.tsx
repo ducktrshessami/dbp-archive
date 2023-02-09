@@ -4,7 +4,7 @@ import { PartialMessageProps } from "./MessageProps";
 export default function PartialMessage(props: PartialMessageProps) {
     return (
         <li className="message partial">
-            {renderContent(props.content)}
+            {renderContent(props.content, props.resolved)}
             {renderAttachments(props.attachments)}
         </li>
     );
