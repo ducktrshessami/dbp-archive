@@ -28,7 +28,8 @@ export async function getResolvedData(): Promise<ResolvedData> {
     const rawData: RawResolvedData = await fetchJson("/api/resolved");
     return {
         channels: fromArray(rawData.channels),
-        users: fromArray(rawData.users)
+        users: fromArray(rawData.users),
+        roles: fromArray(rawData.roles)
     };
 }
 
@@ -66,12 +67,19 @@ export type UserData = {
     avatarUrl: string
 };
 
+export type RoleData = {
+    id: string,
+    name: string
+};
+
 type RawResolvedData = {
     channels: Array<ChannelData>,
-    users: Array<UserData>
+    users: Array<UserData>,
+    roles: Array<RoleData>
 };
 
 export type ResolvedData = {
     channels: Map<string, ChannelData>,
-    users: Map<string, UserData>
+    users: Map<string, UserData>,
+    roles: Map<string, RoleData>
 };

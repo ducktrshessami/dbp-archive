@@ -4,6 +4,7 @@ import {
     Attachment,
     Channel,
     Message,
+    Role,
     sequelize,
     User
 } from "../models";
@@ -13,11 +14,20 @@ export const router = Router();
 
 router
     .get("/api/resolved", async (_, res) => {
-        const [channels, users] = await Promise.all([
+        const [
+            channels,
+            users,
+            roles
+        ] = await Promise.all([
             channelList(),
-            userList()
+            userList(),
+            roleList()
         ]);
-        const data: ResolvedData = { channels, users };
+        const data: ResolvedData = {
+            channels,
+            users,
+            roles
+        };
         res
             .status(200)
             .json(data);
@@ -102,6 +112,16 @@ async function channelList(): Promise<Array<ChannelData>> {
     }));
 }
 
+async function roleList(): Promise<Array<RoleData>> {
+    const models = await Role.findAll({
+        attributes: ["id", "name"]
+    });
+    return models.map(model => ({
+        id: model.id,
+        name: model.name
+    }));
+}
+
 function defaultAvatarUrl(discriminator: string): string {
     return `https://cdn.discordapp.com/embed/avatars/${parseInt(discriminator) % 5}.png`;
 }
@@ -163,7 +183,13 @@ type UserData = {
     avatarUrl: string
 };
 
+type RoleData = {
+    id: string,
+    name: string
+};
+
 type ResolvedData = {
     channels: Array<ChannelData>,
-    users: Array<UserData>
+    users: Array<UserData>,
+    roles: Array<RoleData>
 };
