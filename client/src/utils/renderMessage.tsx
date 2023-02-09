@@ -21,8 +21,18 @@ function parseUserMentions(content: ParsableContent, users?: Nullable<Map<string
     });
 }
 
+function parseChannelMentions(content: ParsableContent, channels?: Nullable<Map<string, ChannelData>>) {
+    return reactStringReplace(content, /<#(?<id>\d{17,19})>/, match => {
+        const channel = channels?.get(match.groups!.id);
+        const name = channel?.name ?? "deleted-channel";
+        return (
+            <Mention>#{name}</Mention>
+        );
+    });
+}
+
 function parseContent(content: string, resolved: ResolvedMessageData) {
-    return parseEmojis(parseUserMentions(content, resolved?.users));
+    return parseEmojis(parseChannelMentions(parseUserMentions(content, resolved.users), resolved.channels));
 }
 
 export function renderContent(content: string, resolved: ResolvedMessageData) {
@@ -53,7 +63,7 @@ export function renderAttachments(attachments: Array<string>) {
 }
 
 export type ResolvedMessageData = {
-    channels?: Nullable<Array<ChannelData>>,
+    channels?: Nullable<Map<string, ChannelData>>,
     users?: Nullable<Map<string, UserData>>,
     messages?: Nullable<Array<MessageData>>
 };
