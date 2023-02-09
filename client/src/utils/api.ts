@@ -1,4 +1,5 @@
 import { RequestError } from "./error";
+import resolveMapFromArray from "./resolveMapFromArray";
 
 async function fetchWrapped(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
     const res = await fetch(input, init);
@@ -27,7 +28,7 @@ export async function getResolvedData(): Promise<ResolvedData> {
     const rawData: RawResolvedData = await fetchJson("/api/resolved");
     return {
         channels: rawData.channels,
-        users: new Map<string, UserData>(rawData.users.map(user => [user.id, user]))
+        users: resolveMapFromArray(rawData.users)
     };
 }
 
