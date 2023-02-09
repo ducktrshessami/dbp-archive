@@ -6,16 +6,16 @@ import PartialMessage from "./PartialMessage";
 import "./MessageList.css";
 import { ResolvedMessageData } from "../utils/renderMessage";
 
-function renderMessageList(channelSelected: boolean, ready: boolean, resolved: ResolvedMessageData) {
+function renderMessageList(props: MessageListProps) {
     switch (true) {
-        case channelSelected && ready && !!resolved.messages:
-            const messages = resolved.messages!.map((message, i) => {
+        case props.channelSelected && props.ready && !!props.resolved.messages:
+            const messages = props.resolved.messages!.map((message, i) => {
                 const createdAt = new Date(message.createdAt);
                 if (
                     message.break ||
                     i === 0 ||
-                    message.authorId !== resolved.messages![i - 1].authorId ||
-                    (message.createdAt - resolved.messages![i - 1].createdAt) >= MESSAGE_AGEBREAK
+                    message.authorId !== props.resolved.messages![i - 1].authorId ||
+                    (message.createdAt - props.resolved.messages![i - 1].createdAt) >= MESSAGE_AGEBREAK
                 ) {
                     return (
                         <Message
@@ -25,7 +25,7 @@ function renderMessageList(channelSelected: boolean, ready: boolean, resolved: R
                             content={message.content}
                             createdAt={createdAt}
                             attachments={message.attachments}
-                            resolved={resolved}
+                            resolved={props.resolved}
                         />
                     );
                 }
@@ -37,7 +37,7 @@ function renderMessageList(channelSelected: boolean, ready: boolean, resolved: R
                             content={message.content}
                             createdAt={createdAt}
                             attachments={message.attachments}
-                            resolved={resolved}
+                            resolved={props.resolved}
                         />
                     );
                 }
@@ -47,7 +47,7 @@ function renderMessageList(channelSelected: boolean, ready: boolean, resolved: R
                     {messages}
                 </ul>
             );
-        case channelSelected && !ready:
+        case props.channelSelected && !props.ready:
             return (
                 <div className="centered-box">
                     <BeatLoader color="#8A9A5B" size="1.5rem" />
@@ -63,7 +63,7 @@ function renderMessageList(channelSelected: boolean, ready: boolean, resolved: R
 export default function MessageList(props: MessageListProps) {
     return (
         <div className="message-list">
-            {renderMessageList(props.channelSelected, props.ready, props.resolved)}
+            {renderMessageList(props)}
         </div>
     );
 }
