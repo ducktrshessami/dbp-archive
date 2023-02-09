@@ -2,7 +2,12 @@ import { ReactNode } from "react";
 import reactStringReplace from "react-string-replace";
 import Emoji from "../components/Emoji";
 import Mention from "../components/Mention";
-import { ChannelData, MessageData, UserData } from "./api";
+import {
+    ChannelData,
+    MessageData,
+    RoleData,
+    UserData
+} from "./api";
 import attachmentUrl from "./attachmentUrl";
 import userTag from "./userTag";
 
@@ -31,8 +36,29 @@ function parseChannelMentions(content: ParsableContent, channels?: Nullable<Map<
     });
 }
 
+function parseRoleMentions(content: ParsableContent, roles?: Nullable<Map<string, RoleData>>) {
+    return reactStringReplace(content, /<@&(?<id>\d{17,19})>/, match => {
+        const role = roles?.get(match.groups!.id);
+        const name = role?.name ?? "deleted-role";
+        return (
+            <Mention>@{name}</Mention>
+        );
+    });
+}
+
 function parseContent(content: string, resolved: ResolvedMessageData) {
-    return parseEmojis(parseChannelMentions(parseUserMentions(content, resolved.users), resolved.channels));
+    return parseEmojis(
+        parseRoleMentions(
+            parseChannelMentions(
+                parseUserMentions(
+                    content,
+                    resolved.users
+                ),
+                resolved.channels
+            ),
+            resolved.roles
+        )
+    );
 }
 
 export function renderContent(content: string, resolved: ResolvedMessageData) {
@@ -65,6 +91,7 @@ export function renderAttachments(attachments: Array<string>) {
 export type ResolvedMessageData = {
     channels?: Nullable<Map<string, ChannelData>>,
     users?: Nullable<Map<string, UserData>>,
+    roles?: Nullable<Map<string, RoleData>>,
     messages?: Nullable<Array<MessageData>>
 };
 
