@@ -1,3 +1,4 @@
+import Markdown from "markdown-to-jsx";
 import { ReactNode } from "react";
 import reactStringReplace from "react-string-replace";
 import Emoji from "../components/Emoji";
@@ -56,7 +57,17 @@ function parseContent(content: string, resolved: ResolvedMessageData) {
             resolved.channels
         ),
         resolved.roles
-    );
+    )
+        .map(node => {
+            if (typeof node === "string") {
+                return (
+                    <Markdown>{node}</Markdown>
+                );
+            }
+            else {
+                return node;
+            }
+        });
 }
 
 export function renderContent(content: string, resolved: ResolvedMessageData) {
