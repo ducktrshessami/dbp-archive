@@ -12,10 +12,13 @@ import {
 import attachmentUrl from "./attachmentUrl";
 import userTag from "./userTag";
 
-function parseEmojis(content: string) {
-    return reactStringReplace(content, /<?(a)?:?\w{2,32}:(?<id>\d{17,19})>?/, (match, i) => (
-        <Emoji key={match.groups!.id + i} id={match.groups!.id} solo={match[0].length === content.length} />
-    ));
+function parseEmojis(content: ParsableContent) {
+    const soloable = typeof content === "string" || content.length === 1;
+    return reactStringReplace(content, /<?(a)?:?\w{2,32}:(?<id>\d{17,19})>?/, (match, i) => {
+        return (
+            <Emoji key={match.groups!.id + i} id={match.groups!.id} solo={soloable && match[0].length === content.length} />
+        );
+    });
 }
 
 function parseUserMentions(content: ParsableContent, users?: Nullable<Map<string, UserData>>) {
