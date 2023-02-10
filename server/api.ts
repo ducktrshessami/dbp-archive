@@ -94,14 +94,10 @@ async function userList(): Promise<Array<UserData>> {
 
 async function channelList(): Promise<Array<ChannelData>> {
     const models = <Array<CountedChannel>>await Channel.findAll({
-        where: {
-            hidden: {
-                [Op.not]: true
-            }
-        },
         attributes: [
             "id",
             "name",
+            "hidden",
             [sequelize.literal("(SELECT COUNT(*) FROM `Messages` as `Message` WHERE `Message`.`ChannelId` = `Channel`.`id`)"), "MessageCount"]
         ],
         order: [["order", "ASC"]]
@@ -109,6 +105,7 @@ async function channelList(): Promise<Array<ChannelData>> {
     return models.map(model => ({
         id: model.id,
         name: model.name,
+        hidden: model.hidden,
         pages: Math.ceil(model.getDataValue("MessageCount") / PAGE_LIMIT)
     }));
 }
@@ -165,6 +162,7 @@ type CountedChannel = Channel & CountedMessages;
 type ChannelData = {
     id: string,
     name: string,
+    hidden: boolean,
     pages: number
 };
 

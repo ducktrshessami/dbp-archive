@@ -48,6 +48,7 @@ export async function setChannelHidden(channelId: string, value: boolean): Promi
 export type ChannelData = {
     id: string,
     name: string,
+    hidden: boolean,
     pages: number
 };
 
