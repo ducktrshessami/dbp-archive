@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
+    order: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
     hidden: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,

@@ -21,6 +21,7 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
 export class Channel extends Model<InferAttributes<Channel>, InferCreationAttributes<Channel>> {
     id: string;
     name: string;
+    order: number;
     hidden: CreationOptional<boolean>;
 
     Messages?: NonAttribute<Array<Message>>;
