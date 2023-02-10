@@ -13,36 +13,36 @@ import attachmentUrl from "./attachmentUrl";
 import userTag from "./userTag";
 
 function parseEmojis(content: string) {
-    return reactStringReplace(content, /<?(a)?:?\w{2,32}:(?<id>\d{17,19})>?/, match => (
-        <Emoji id={match.groups!.id} solo={match[0].length === content.length} />
+    return reactStringReplace(content, /<?(a)?:?\w{2,32}:(?<id>\d{17,19})>?/, (match, i) => (
+        <Emoji key={match.groups!.id + i} id={match.groups!.id} solo={match[0].length === content.length} />
     ));
 }
 
 function parseUserMentions(content: ParsableContent, users?: Nullable<Map<string, UserData>>) {
-    return reactStringReplace(content, /<@!?(?<id>\d{17,19})>/, match => {
+    return reactStringReplace(content, /<@!?(?<id>\d{17,19})>/, (match, i) => {
         const tag = userTag(users?.get(match.groups!.id));
         return (
-            <Mention>@{tag}</Mention>
+            <Mention key={match.groups!.id + i}>@{tag}</Mention>
         );
     });
 }
 
 function parseChannelMentions(content: ParsableContent, channels?: Nullable<Map<string, ChannelData>>) {
-    return reactStringReplace(content, /<#(?<id>\d{17,19})>/, match => {
+    return reactStringReplace(content, /<#(?<id>\d{17,19})>/, (match, i) => {
         const channel = channels?.get(match.groups!.id);
         const name = channel?.name ?? "deleted-channel";
         return (
-            <Mention>#{name}</Mention>
+            <Mention key={match.groups!.id + i}>#{name}</Mention>
         );
     });
 }
 
 function parseRoleMentions(content: ParsableContent, roles?: Nullable<Map<string, RoleData>>) {
-    return reactStringReplace(content, /<@&(?<id>\d{17,19})>/, match => {
+    return reactStringReplace(content, /<@&(?<id>\d{17,19})>/, (match, i) => {
         const role = roles?.get(match.groups!.id);
         const name = role?.name ?? "deleted-role";
         return (
-            <Mention>@{name}</Mention>
+            <Mention key={match.groups!.id + i}>@{name}</Mention>
         );
     });
 }
@@ -58,10 +58,10 @@ function parseContent(content: string, resolved: ResolvedMessageData) {
         ),
         resolved.roles
     )
-        .map(node => {
+        .map((node, i) => {
             if (typeof node === "string") {
                 return (
-                    <Markdown>{node}</Markdown>
+                    <Markdown key={i}>{node}</Markdown>
                 );
             }
             else {
