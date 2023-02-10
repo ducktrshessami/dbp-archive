@@ -103,7 +103,8 @@ async function channelList(): Promise<Array<ChannelData>> {
             "id",
             "name",
             [sequelize.literal("(SELECT COUNT(*) FROM `Messages` as `Message` WHERE `Message`.`ChannelId` = `Channel`.`id`)"), "MessageCount"]
-        ]
+        ],
+        order: [["order", "ASC"]]
     });
     return models.map(model => ({
         id: model.id,
