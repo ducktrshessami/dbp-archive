@@ -2,6 +2,10 @@
 /** @type {import("sequelize-cli").Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
+        await queryInterface.addColumn("Channels", "order", {
+            type: Sequelize.DataTypes.INTEGER,
+            allowNull: false
+        });
         await queryInterface.addColumn("Channels", "hidden", {
             type: Sequelize.DataTypes.BOOLEAN,
             defaultValue: false,
@@ -14,6 +18,7 @@ module.exports = {
         });
     },
     async down(queryInterface, Sequelize) {
+        await queryInterface.removeColumn("Channels", "order");
         await queryInterface.removeColumn("Channels", "hidden");
         await queryInterface.removeColumn("Messages", "break");
     }
