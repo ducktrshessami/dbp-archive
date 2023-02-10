@@ -2,7 +2,7 @@
   "name": "dbp-archive",
   "version": "0.1.0",
   "description": "Send these messages to the principal's office!",
-  "main": "server/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "install": "yarn install-client && yarn install-worker",
