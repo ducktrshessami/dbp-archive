@@ -1,18 +1,27 @@
 import { BeatLoader } from "react-spinners";
 import { ChannelData } from "../utils/api";
-import { mapMap } from "../utils/mapUtils";
+import { reduceMap } from "../utils/mapUtils";
 import Channel from "./Channel";
 import "./ChannelList.css";
 
 function renderChannelList(props: ChannelListProps) {
     if (props.channels) {
-        const channels = mapMap(props.channels, channel =>
-            <Channel
-                key={channel.id}
-                id={channel.id}
-                name={channel.name}
-                selected={channel.id === props.selected}
-            />
+        const channels = reduceMap(
+            props.channels,
+            (channelList, channel) => {
+                if (!channel.hidden) {
+                    channelList.push(
+                        <Channel
+                            key={channel.id}
+                            id={channel.id}
+                            name={channel.name}
+                            selected={channel.id === props.selected}
+                        />
+                    );
+                }
+                return channelList;
+            },
+            new Array<JSX.Element>()
         );
         return (
             <ul>
