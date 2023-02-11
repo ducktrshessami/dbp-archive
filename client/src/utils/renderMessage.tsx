@@ -1,4 +1,4 @@
-import Markdown from "markdown-to-jsx";
+import { compiler } from "markdown-to-jsx";
 import { ReactNode } from "react";
 import reactStringReplace from "react-string-replace";
 import Emoji from "../components/Emoji";
@@ -65,7 +65,7 @@ function parseContent(content: string, resolved: ResolvedMessageData) {
                 const endResult = node.match(/\s+$/);
                 return new Array<ReactNode>().concat(
                     startResult,
-                    <Markdown key={i}>{node}</Markdown>,
+                    compiler(node, { wrapper: null }),
                     endResult
                 );
             }
