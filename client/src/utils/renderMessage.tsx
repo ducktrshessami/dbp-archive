@@ -59,10 +59,14 @@ function parseContent(content: string, resolved: ResolvedMessageData) {
         ),
         resolved.roles
     )
-        .map((node, i) => {
+        .flatMap((node, i) => {
             if (typeof node === "string") {
-                return (
-                    <Markdown key={i}>{node}</Markdown>
+                const startResult = node.match(/^\s+/);
+                const endResult = node.match(/\s+$/);
+                return new Array<ReactNode>().concat(
+                    startResult,
+                    <Markdown key={i}>{node}</Markdown>,
+                    endResult
                 );
             }
             else {
@@ -74,7 +78,7 @@ function parseContent(content: string, resolved: ResolvedMessageData) {
 export function renderContent(content: string, resolved: ResolvedMessageData) {
     if (content.length) {
         return (
-            <span>{parseContent(content, resolved)}</span>
+            <div>{parseContent(content, resolved)}</div>
         );
     }
     else {
