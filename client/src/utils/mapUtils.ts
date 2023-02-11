@@ -2,14 +2,6 @@ export function fromArray<T extends Identifiable>(array: Array<T>): Map<string, 
     return new Map<string, T>(array.map(item => [item.id, item]));
 }
 
-export function mapMap<K, V, T>(map: Map<K, V>, fn: (value: V, key: K, map: Map<K, V>) => T): Array<T> {
-    const iter = map.entries();
-    return Array.from({ length: map.size }, () => {
-        const [key, value] = iter.next().value;
-        return fn(value, key, map);
-    });
-}
-
 export function reduceMap<K, V, T>(map: Map<K, V>, fn: (accumulator: T, value: V, key: K, map: Map<K, V>) => T, initialValue?: T): T {
     if (!map.size) {
         if (typeof initialValue === "undefined") {
