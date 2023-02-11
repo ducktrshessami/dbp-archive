@@ -53,7 +53,7 @@ export default function MessageContainer(props: MessageContainerProps) {
         ) {
             (async function () {
                 if (isNaN(page) || page.toString() !== props.page) {
-                    navigate("/");
+                    navigate("/", { replace: true });
                     return;
                 }
                 try {
@@ -67,7 +67,7 @@ export default function MessageContainer(props: MessageContainerProps) {
                 }
                 catch (err) {
                     console.error(err);
-                    navigate("/");
+                    navigate("/", { replace: true });
                 }
             })();
         }
