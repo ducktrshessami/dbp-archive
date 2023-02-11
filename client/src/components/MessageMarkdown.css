@@ -2,3 +2,11 @@
     background-color: #2F3136;
     padding: 0 0.33ch;
 }
+
+.content em {
+    font-style: italic;
+}
+
+.content strong {
+    font-weight: 700;
+}
