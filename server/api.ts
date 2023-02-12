@@ -158,9 +158,13 @@ async function getChannelPage(channelId: string, pageIndex: number): Promise<Arr
 
 async function getMessagePageNum(channelId: string, messageId: string): Promise<number | null> {
     const message = await Message.findByPk(messageId, {
-        attributes: ["createdAt"]
+        attributes: ["createdAt"],
+        include: {
+            model: Channel,
+            attributes: ["hidden"]
+        }
     });
-    if (!message) {
+    if (!message || message.Channel!.hidden) {
         return null;
     }
     const before = await Message.count({
