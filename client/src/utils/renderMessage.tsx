@@ -58,21 +58,29 @@ function parseRoleMentions(content: ParsableContent, roles?: Nullable<Map<string
     });
 }
 
+function parseEveryoneMentions(content: ParsableContent) {
+    return reactStringReplace(content, /@(?<type>everyone|here)/, (match, i) => (
+        <Mention key={match.groups!.type + i}>{match[0]}</Mention>
+    ));
+}
+
 function parseContent(content: string, resolved: ResolvedMessageData) {
-    return parseRoleMentions(
-        parseChannelMentions(
-            parseUserMentions(
-                parseEmojis(
-                    parseMessageLinks(
-                        content,
-                        resolved.messageLinks
-                    )
+    return parseEveryoneMentions(
+        parseRoleMentions(
+            parseChannelMentions(
+                parseUserMentions(
+                    parseEmojis(
+                        parseMessageLinks(
+                            content,
+                            resolved.messageLinks
+                        )
+                    ),
+                    resolved.users
                 ),
-                resolved.users
+                resolved.channels
             ),
-            resolved.channels
-        ),
-        resolved.roles
+            resolved.roles
+        )
     )
         .flatMap((node, i) => {
             if (typeof node === "string") {
