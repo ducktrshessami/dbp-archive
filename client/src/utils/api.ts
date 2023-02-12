@@ -29,7 +29,8 @@ export async function getResolvedData(): Promise<ResolvedData> {
     return {
         channels: fromArray(rawData.channels),
         users: fromArray(rawData.users),
-        roles: fromArray(rawData.roles)
+        roles: fromArray(rawData.roles),
+        messageLinks: new Map<string, number>(rawData.messageLinks)
     };
 }
 
@@ -73,14 +74,18 @@ export type RoleData = {
     name: string
 };
 
+type RawMessageLinkData = [string, number];
+
 type RawResolvedData = {
     channels: Array<ChannelData>,
     users: Array<UserData>,
-    roles: Array<RoleData>
+    roles: Array<RoleData>,
+    messageLinks: Array<RawMessageLinkData>
 };
 
 export type ResolvedData = {
     channels: Map<string, ChannelData>,
     users: Map<string, UserData>,
-    roles: Map<string, RoleData>
+    roles: Map<string, RoleData>,
+    messageLinks: Map<string, number>
 };
