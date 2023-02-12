@@ -17,16 +17,19 @@ router
         const [
             channels,
             users,
-            roles
+            roles,
+            messageLinks
         ] = await Promise.all([
             channelList(),
             userList(),
-            roleList()
+            roleList(),
+            resolveMessageLinks()
         ]);
         const data: ResolvedData = {
             channels,
             users,
-            roles
+            roles,
+            messageLinks
         };
         res
             .status(200)
@@ -153,6 +156,41 @@ async function getChannelPage(channelId: string, pageIndex: number): Promise<Arr
     }));
 }
 
+async function getMessagePageNum(channelId: string, messageId: string): Promise<number | null> {
+    const message = await Message.findByPk(messageId, {
+        attributes: ["createdAt"]
+    });
+    if (!message) {
+        return null;
+    }
+    const before = await Message.count({
+        where: {
+            ChannelId: channelId,
+            createdAt: {
+                [Op.lt]: message.createdAt
+            }
+        }
+    });
+    return Math.floor(before / PAGE_LIMIT) + 1;
+}
+
+async function resolveMessageLinks(): Promise<Array<MessageLinkData>> {
+    const messages = await Message.findAll({
+        attributes: ["content"]
+    });
+    const resolved = new Map<string, number | null>();
+    for (const message of messages) {
+        const linkResults = message.content.matchAll(/https?:\/\/discord.com\/channels\/(?<guildId>\d{17,19})\/(?<channelId>\d{17,19})\/(?<messageId>\d{17,19})\/?/gi);
+        for (const result of linkResults) {
+            const ids = `${result.groups!.channelId}/${result.groups!.messageId}`;
+            if (!resolved.has(ids)) {
+                resolved.set(ids, await getMessagePageNum(result.groups!.channelId, result.groups!.messageId));
+            }
+        }
+    }
+    return Array.from(resolved.entries());
+}
+
 interface CountedMessages {
     getDataValue(key: "MessageCount"): number;
 }
@@ -187,8 +225,11 @@ type RoleData = {
     name: string
 };
 
+type MessageLinkData = [string, number | null];
+
 type ResolvedData = {
     channels: Array<ChannelData>,
     users: Array<UserData>,
-    roles: Array<RoleData>
+    roles: Array<RoleData>,
+    messageLinks: Array<MessageLinkData>
 };
