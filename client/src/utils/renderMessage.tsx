@@ -65,7 +65,10 @@ function parseContent(content: string, resolved: ResolvedMessageData) {
                 const endResult = node.match(/\s+$/);
                 return new Array<ReactNode>().concat(
                     startResult,
-                    compiler(node, { wrapper: null }),
+                    compiler(node, {
+                        wrapper: null,
+                        forceInline: true
+                    }),
                     endResult
                 );
             }
