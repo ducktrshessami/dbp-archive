@@ -1,5 +1,10 @@
-import { useRef } from "react";
+import {
+    useEffect,
+    useRef,
+    useState
+} from "react";
 import { useLocation } from "react-router-dom";
+import { MESSAGE_GLOWTIMEOUT } from "../utils/constants";
 import { renderAttachments, renderContent } from "../utils/renderMessage";
 import userTag from "../utils/userTag";
 import { MessageProps } from "./MessageProps";
@@ -31,15 +36,27 @@ function formatTimestamp(timestamp: Date): string {
 export default function Message(props: MessageProps) {
     const ref = useRef<HTMLLIElement | null>(null);
     const location = useLocation();
+    const [glow, setGlow] = useState<boolean>(false);
+    const [done, setDone] = useState<boolean>(false);
+    const focused = location.hash === `#${props.id}`;
     const author = props.resolved.users?.get(props.authorId);
     const tag = userTag(author);
 
-    if (ref.current && location.hash === `#${props.id}`) {
+    if (ref.current && focused) {
         ref.current.scrollIntoView();
     }
 
+    useEffect(() => {
+        if (!glow && !done) {
+            setGlow(focused);
+        }
+        else if (glow && !done) {
+            setTimeout(() => setDone(true), MESSAGE_GLOWTIMEOUT);
+        }
+    });
+
     return (
-        <li ref={ref} className="message">
+        <li ref={ref} className={glow && !done ? "message glow" : "message"}>
             <img className="avatar" src={author?.avatarUrl} alt={`${tag}'s avatar`} />
             <div className="content">
                 <div className="content-header">

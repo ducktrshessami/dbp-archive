@@ -7,6 +7,11 @@
     padding: 0.5rem 3ch;
     display: flex;
     word-break: break-word;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.message.glow {
+    background-color: #3E414D;
 }
 
 .message:hover {
