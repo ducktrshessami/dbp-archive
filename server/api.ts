@@ -178,13 +178,16 @@ async function resolveMessageLinks(): Promise<Array<MessageLinkData>> {
     const messages = await Message.findAll({
         attributes: ["content"]
     });
-    const resolved = new Map<string, number | null>();
+    const resolved = new Map<string, number>();
     for (const message of messages) {
         const linkResults = message.content.matchAll(/https?:\/\/discord.com\/channels\/(?<guildId>\d{17,19})\/(?<channelId>\d{17,19})\/(?<messageId>\d{17,19})\/?/gi);
         for (const result of linkResults) {
             const ids = `${result.groups!.channelId}/${result.groups!.messageId}`;
             if (!resolved.has(ids)) {
-                resolved.set(ids, await getMessagePageNum(result.groups!.channelId, result.groups!.messageId));
+                const page = await getMessagePageNum(result.groups!.channelId, result.groups!.messageId);
+                if (page) {
+                    resolved.set(ids, page);
+                }
             }
         }
     }
@@ -225,7 +228,7 @@ type RoleData = {
     name: string
 };
 
-type MessageLinkData = [string, number | null];
+type MessageLinkData = [string, number];
 
 type ResolvedData = {
     channels: Array<ChannelData>,
