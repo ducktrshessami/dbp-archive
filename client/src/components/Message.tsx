@@ -1,3 +1,5 @@
+import { useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { renderAttachments, renderContent } from "../utils/renderMessage";
 import userTag from "../utils/userTag";
 import { MessageProps } from "./MessageProps";
@@ -27,10 +29,17 @@ function formatTimestamp(timestamp: Date): string {
 }
 
 export default function Message(props: MessageProps) {
+    const ref = useRef<HTMLLIElement | null>(null);
+    const location = useLocation();
     const author = props.resolved.users?.get(props.authorId);
     const tag = userTag(author);
+
+    if (ref.current && location.hash === `#${props.id}`) {
+        ref.current.scrollIntoView();
+    }
+
     return (
-        <li className="message">
+        <li ref={ref} className="message">
             <img className="avatar" src={author?.avatarUrl} alt={`${tag}'s avatar`} />
             <div className="content">
                 <div className="content-header">
