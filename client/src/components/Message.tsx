@@ -4,7 +4,7 @@ import {
     useState
 } from "react";
 import { useLocation } from "react-router-dom";
-import { MESSAGE_GLOWTIMEOUT } from "../utils/constants";
+import { MESSAGE_GLOWTIMEOUT } from "../constants";
 import { renderAttachments, renderContent } from "../utils/renderMessage";
 import userTag from "../utils/userTag";
 import { MessageProps } from "./MessageProps";

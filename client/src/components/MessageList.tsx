@@ -1,5 +1,5 @@
 import { BeatLoader } from "react-spinners";
-import { MESSAGE_AGEBREAK } from "../utils/constants";
+import { MESSAGE_AGEBREAK } from "../constants";
 import Message from "./Message";
 import Notice from "./Notice";
 import PartialMessage from "./PartialMessage";
