@@ -10,3 +10,7 @@
 .content strong {
     font-weight: 700;
 }
+
+.content del {
+    text-decoration: line-through;
+}
