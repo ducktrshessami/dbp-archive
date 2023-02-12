@@ -180,7 +180,7 @@ async function resolveMessageLinks(): Promise<Array<MessageLinkData>> {
     });
     const resolved = new Map<string, number>();
     for (const message of messages) {
-        const linkResults = message.content.matchAll(/https?:\/\/discord.com\/channels\/(?<guildId>\d{17,19})\/(?<channelId>\d{17,19})\/(?<messageId>\d{17,19})\/?/gi);
+        const linkResults = message.content.matchAll(/https?:\/\/discord(app)?.com\/channels\/(?<guildId>\d{17,19})\/(?<channelId>\d{17,19})\/(?<messageId>\d{17,19})\/?/gi);
         for (const result of linkResults) {
             const ids = `${result.groups!.channelId}/${result.groups!.messageId}`;
             if (!resolved.has(ids)) {
