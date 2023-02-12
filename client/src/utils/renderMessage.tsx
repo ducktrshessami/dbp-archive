@@ -1,5 +1,6 @@
 import { compiler } from "markdown-to-jsx";
 import { ReactNode } from "react";
+import { Link } from "react-router-dom";
 import reactStringReplace from "react-string-replace";
 import Emoji from "../components/Emoji";
 import Mention from "../components/Mention";
@@ -11,6 +12,15 @@ import {
 } from "./api";
 import attachmentUrl from "./attachmentUrl";
 import userTag from "./userTag";
+
+function parseMessageLinks(content: ParsableContent, messageLinks?: Nullable<Map<string, number>>) {
+    return reactStringReplace(content, /https?:\/\/discord(app)?.com\/channels\/(?<guildId>\d{17,19})\/(?<channelId>\d{17,19})\/(?<messageId>\d{17,19})\/?/i, (match, i) => {
+        const page = messageLinks?.get(`${match.groups!.channelId}/${match.groups!.messageId}`);
+        return (
+            <Link key={match.groups!.messageId + i} to={page ? `/${match.groups!.channelId}/${page}#${match.groups!.messageId}` : "#"}>{match[0]}</Link>
+        );
+    });
+}
 
 function parseEmojis(content: ParsableContent) {
     const soloable = typeof content === "string" || content.length === 1;
@@ -52,7 +62,12 @@ function parseContent(content: string, resolved: ResolvedMessageData) {
     return parseRoleMentions(
         parseChannelMentions(
             parseUserMentions(
-                parseEmojis(content),
+                parseEmojis(
+                    parseMessageLinks(
+                        content,
+                        resolved.messageLinks
+                    )
+                ),
                 resolved.users
             ),
             resolved.channels
@@ -109,6 +124,7 @@ export type ResolvedMessageData = {
     channels?: Nullable<Map<string, ChannelData>>,
     users?: Nullable<Map<string, UserData>>,
     roles?: Nullable<Map<string, RoleData>>,
+    messageLinks?: Nullable<Map<string, number>>,
     messages?: Nullable<Array<MessageData>>
 };
 
