@@ -14,3 +14,9 @@
 .content del {
     text-decoration: line-through;
 }
+
+.content blockquote {
+    border-radius: 2px;
+    border-left: 0.5ch solid #4F545C;
+    padding-left: 1.5ch;
+}
