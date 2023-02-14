@@ -1,21 +1,21 @@
-.content code {
+.message code {
     background-color: #2F3136;
     padding: 0 0.33ch;
 }
 
-.content em {
+.message em {
     font-style: italic;
 }
 
-.content strong {
+.message strong {
     font-weight: 700;
 }
 
-.content del {
+.message del {
     text-decoration: line-through;
 }
 
-.content blockquote {
+.message blockquote {
     border-radius: 2px;
     border-left: 0.5ch solid #4F545C;
     padding-left: 1.5ch;
