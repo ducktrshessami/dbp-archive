@@ -1,4 +1,5 @@
-import { compiler } from "markdown-to-jsx";
+import { toHTML as markdownToHTML } from "discord-markdown-fix";
+import DOMPurify from "dompurify";
 import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import reactStringReplace from "react-string-replace";
@@ -84,15 +85,8 @@ function parseContent(content: string, resolved: ResolvedMessageData) {
     )
         .flatMap((node, i) => {
             if (typeof node === "string") {
-                const startResult = node.match(/^\s+/);
-                const endResult = node.match(/\s+$/);
-                return new Array<ReactNode>().concat(
-                    startResult,
-                    compiler(node, {
-                        wrapper: null,
-                        forceInline: true
-                    }),
-                    endResult
+                return (
+                    <span key={i} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(markdownToHTML(node)) }} /> // wew
                 );
             }
             else {
