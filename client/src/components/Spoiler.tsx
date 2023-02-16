@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./Spoiler.css";
 
 export default function Spoiler(props: SpoilerProps) {
     const [revealed, setRevealed] = useState<boolean>(false);
