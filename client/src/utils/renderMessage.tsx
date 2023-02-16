@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import reactStringReplace from "react-string-replace";
 import Emoji from "../components/Emoji";
 import Mention from "../components/Mention";
+import Spoiler from "../components/Spoiler";
 import {
     ChannelData,
     MessageData,
@@ -13,6 +14,10 @@ import {
 } from "./api";
 import attachmentUrl from "./attachmentUrl";
 import userTag from "./userTag";
+
+function mdToHtml(markdown: string): string {
+    return DOMPurify.sanitize(markdownToHTML(markdown));
+}
 
 function parseMessageLinks(content: ParsableContent, messageLinks?: Nullable<Map<string, number>>) {
     return reactStringReplace(content, /https?:\/\/discord(app)?.com\/channels\/(?<guildId>\d{17,19})\/(?<channelId>\d{17,19})\/(?<messageId>\d{17,19})\/?/i, (match, i) => {
@@ -59,26 +64,34 @@ function parseRoleMentions(content: ParsableContent, roles?: Nullable<Map<string
     });
 }
 
+function parseSpoilerTags(content: ParsableContent) {
+    return reactStringReplace(content, /\|\|(?<inner>(?:[^\|]|\\\|)+)\|\|/, (match, i) => (
+        <Spoiler key={`d-spoiler-${i}`} html={mdToHtml(match.groups!.inner)} />
+    ));
+}
+
 function parseContent(content: string, resolved: ResolvedMessageData) {
-    return parseRoleMentions(
-        parseChannelMentions(
-            parseUserMentions(
-                parseEmojis(
-                    parseMessageLinks(
-                        content,
-                        resolved.messageLinks
-                    )
+    return parseSpoilerTags(
+        parseRoleMentions(
+            parseChannelMentions(
+                parseUserMentions(
+                    parseEmojis(
+                        parseMessageLinks(
+                            content,
+                            resolved.messageLinks
+                        )
+                    ),
+                    resolved.users
                 ),
-                resolved.users
+                resolved.channels
             ),
-            resolved.channels
-        ),
-        resolved.roles
+            resolved.roles
+        )
     )
         .flatMap((node, i) => {
             if (typeof node === "string") {
                 return (
-                    <span key={i} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(markdownToHTML(node)) }} /> // wew
+                    <span key={i} dangerouslySetInnerHTML={{ __html: mdToHtml(node) }} /> // wew
                 );
             }
             else {
