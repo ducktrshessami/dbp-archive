@@ -1,9 +1,8 @@
-import { toHTML as markdownToHTML } from "discord-markdown-fix";
-import DOMPurify from "dompurify";
 import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import reactStringReplace from "react-string-replace";
 import Emoji from "../components/Emoji";
+import Markdown from "../components/Markdown";
 import Mention from "../components/Mention";
 import Spoiler from "../components/Spoiler";
 import {
@@ -14,10 +13,6 @@ import {
 } from "./api";
 import attachmentUrl from "./attachmentUrl";
 import userTag from "./userTag";
-
-function mdToHtml(markdown: string): string {
-    return DOMPurify.sanitize(markdownToHTML(markdown));
-}
 
 function parseMessageLinks(content: ParsableContent, messageLinks?: Nullable<Map<string, number>>) {
     return reactStringReplace(content, /https?:\/\/discord(app)?.com\/channels\/(?<guildId>\d{17,19})\/(?<channelId>\d{17,19})\/(?<messageId>\d{17,19})\/?/i, (match, i) => {
@@ -64,35 +59,45 @@ function parseRoleMentions(content: ParsableContent, roles?: Nullable<Map<string
     });
 }
 
-function parseSpoilerTags(content: ParsableContent) {
+function parseRawContent(content: string, resolved: ResolvedMessageData) {
+    return parseRoleMentions(
+        parseChannelMentions(
+            parseUserMentions(
+                parseEmojis(
+                    parseMessageLinks(
+                        content,
+                        resolved.messageLinks
+                    )
+                ),
+                resolved.users
+            ),
+            resolved.channels
+        ),
+        resolved.roles
+    )
+        .map((node, i) => {
+            if (typeof node === "string") {
+                return (
+                    <Markdown key={`markdown-${i}`}>{node}</Markdown>
+                );
+            }
+            else {
+                return node;
+            }
+        });
+}
+
+function parseSpoilerTags(content: ParsableContent, resolved: ResolvedMessageData) {
     return reactStringReplace(content, /\|\|(?<inner>(?:[^\|]|\\\|)+)\|\|/, (match, i) => (
-        <Spoiler key={`d-spoiler-${i}`} html={mdToHtml(match.groups!.inner)} />
+        <Spoiler key={`spoiler-${i}`}>{parseRawContent(match.groups!.inner, resolved)}</Spoiler>
     ));
 }
 
 function parseContent(content: string, resolved: ResolvedMessageData) {
-    return parseSpoilerTags(
-        parseRoleMentions(
-            parseChannelMentions(
-                parseUserMentions(
-                    parseEmojis(
-                        parseMessageLinks(
-                            content,
-                            resolved.messageLinks
-                        )
-                    ),
-                    resolved.users
-                ),
-                resolved.channels
-            ),
-            resolved.roles
-        )
-    )
-        .flatMap((node, i) => {
+    return parseSpoilerTags(content, resolved)
+        .flatMap(node => {
             if (typeof node === "string") {
-                return (
-                    <span key={i} dangerouslySetInnerHTML={{ __html: mdToHtml(node) }} /> // wew
-                );
+                return parseRawContent(node, resolved);
             }
             else {
                 return node;
