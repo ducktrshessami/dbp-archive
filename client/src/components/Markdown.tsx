@@ -1,5 +1,6 @@
 import { toHTML } from "discord-markdown-fix";
 import DOMPurify from "dompurify";
+import "./Markdown.css";
 
 export default function Markdown(props: MarkdownProps) {
     return (

@@ -1,9 +1,9 @@
-.message code {
+.markdown code {
     background-color: #2F3136;
     padding: 0 0.33ch;
 }
 
-.message pre {
+.markdown pre {
     white-space: pre-wrap;
     word-wrap: break-word;
     background-color: #2F3136;
@@ -14,23 +14,23 @@
     max-width: 90%;
 }
 
-.message pre code {
+.markdown pre code {
     padding: 0;
 }
 
-.message em {
+.markdown em {
     font-style: italic;
 }
 
-.message strong {
+.markdown strong {
     font-weight: 700;
 }
 
-.message del {
+.markdown del {
     text-decoration: line-through;
 }
 
-.message blockquote {
+.markdown blockquote {
     border-radius: 2px;
     border-left: 0.5ch solid #4F545C;
     padding-left: 1.5ch;
