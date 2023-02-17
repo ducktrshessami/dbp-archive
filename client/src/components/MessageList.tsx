@@ -5,7 +5,6 @@ import Notice from "./Notice";
 import PartialMessage from "./PartialMessage";
 import "./MessageList.css";
 import { ResolvedMessageData } from "../utils/renderMessage";
-import "./MessageMarkdown.css";
 
 function renderMessageList(props: MessageListProps) {
     switch (true) {
