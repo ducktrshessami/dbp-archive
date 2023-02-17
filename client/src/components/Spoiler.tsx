@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import "./Spoiler.css";
 
 export default function Spoiler(props: SpoilerProps) {
@@ -11,9 +11,10 @@ export default function Spoiler(props: SpoilerProps) {
                     setRevealed(true);
                 }
             }}
-            dangerouslySetInnerHTML={{ __html: props.html }}
-        />
+        >
+            {props.children}
+        </span>
     );
 }
 
-type SpoilerProps = { html: string };
+type SpoilerProps = { children?: ReactNode };
