@@ -22,10 +22,6 @@
     padding: 0.25rem 3ch 0.25rem calc(3rem + 5ch);
 }
 
-.message>* {
-    display: inline-block;
-}
-
 .avatar {
     height: 3rem;
     border-radius: 3rem;
