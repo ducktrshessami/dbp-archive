@@ -1,6 +1,6 @@
 {
   "name": "dbp-archive",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Send these messages to the principal's office!",
   "main": "dist/index.js",
   "scripts": {
