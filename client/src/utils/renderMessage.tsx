@@ -1,9 +1,10 @@
-import { compiler } from "markdown-to-jsx";
 import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import reactStringReplace from "react-string-replace";
 import Emoji from "../components/Emoji";
+import Markdown from "../components/Markdown";
 import Mention from "../components/Mention";
+import Spoiler from "../components/Spoiler";
 import {
     ChannelData,
     MessageData,
@@ -25,7 +26,7 @@ function parseMessageLinks(content: ParsableContent, messageLinks?: Nullable<Map
 function parseEmojis(content: ParsableContent) {
     const soloable = typeof content === "string" || content.length === 1;
     return reactStringReplace(content, /<a?:\w{2,32}:(?<id>\d{17,19})>/, (match, i) => (
-        <Emoji key={match.groups!.id + i} id={match.groups!.id} solo={soloable && match[0].length === content.length} />
+        <Emoji key={match.groups!.id + i} id={match.groups!.id} solo={soloable && match[0].length === match.input.length} />
     ));
 }
 
@@ -64,7 +65,7 @@ function parseEveryoneMentions(content: ParsableContent) {
     ));
 }
 
-function parseContent(content: string, resolved: ResolvedMessageData) {
+function parseRawContent(content: string, resolved: ResolvedMessageData) {
     return parseEveryoneMentions(
         parseRoleMentions(
             parseChannelMentions(
@@ -82,18 +83,29 @@ function parseContent(content: string, resolved: ResolvedMessageData) {
             resolved.roles
         )
     )
-        .flatMap((node, i) => {
+        .map((node, i) => {
             if (typeof node === "string") {
-                const startResult = node.match(/^\s+/);
-                const endResult = node.match(/\s+$/);
-                return new Array<ReactNode>().concat(
-                    startResult,
-                    compiler(node, {
-                        wrapper: null,
-                        forceInline: true
-                    }),
-                    endResult
+                return (
+                    <Markdown key={`markdown-${i}`}>{node}</Markdown>
                 );
+            }
+            else {
+                return node;
+            }
+        });
+}
+
+function parseSpoilerTags(content: ParsableContent, resolved: ResolvedMessageData) {
+    return reactStringReplace(content, /\|\|(?<inner>(?:[^\|]|\\\|)+)\|\|/, (match, i) => (
+        <Spoiler key={`spoiler-${i}`}>{parseRawContent(match.groups!.inner, resolved)}</Spoiler>
+    ));
+}
+
+function parseContent(content: string, resolved: ResolvedMessageData) {
+    return parseSpoilerTags(content, resolved)
+        .flatMap(node => {
+            if (typeof node === "string") {
+                return parseRawContent(node, resolved);
             }
             else {
                 return node;

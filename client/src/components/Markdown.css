@@ -1,0 +1,37 @@
+.markdown code {
+    background-color: #2F3136;
+    padding: 0 0.33ch;
+}
+
+.markdown pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    background-color: #2F3136;
+    border-radius: 3px;
+    border: 1px solid #202225;
+    padding: 0.3rem 1ch;
+    margin: 0.3rem 0;
+    max-width: 90%;
+}
+
+.markdown pre code {
+    padding: 0;
+}
+
+.markdown em {
+    font-style: italic;
+}
+
+.markdown strong {
+    font-weight: 700;
+}
+
+.markdown del {
+    text-decoration: line-through;
+}
+
+.markdown blockquote {
+    border-radius: 2px;
+    border-left: 0.5ch solid #4F545C;
+    padding-left: 1.5ch;
+}

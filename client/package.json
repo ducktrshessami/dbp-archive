@@ -9,7 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "markdown-to-jsx": "^7.1.9",
+    "discord-markdown-fix": "^2.5.4",
+    "dompurify": "^3.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-paginate": "^8.1.4",
@@ -18,6 +19,7 @@
     "react-string-replace": "ducktrshessami/react-string-replace"
   },
   "devDependencies": {
+    "@types/dompurify": "^2.4.0",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@vitejs/plugin-react": "^3.1.0",
