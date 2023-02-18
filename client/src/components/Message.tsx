@@ -56,7 +56,11 @@ export default function Message(props: MessageProps) {
     });
 
     return (
-        <li ref={ref} className={glow && !done ? "message glow" : "message"}>
+        <li
+            ref={ref}
+            className={glow && !done ? "message glow" : "message"}
+            meta-message-id={props.id}
+        >
             <img className="avatar" src={author?.avatarUrl} alt={`${tag}'s avatar`} />
             <div className="content">
                 <div className="content-header">

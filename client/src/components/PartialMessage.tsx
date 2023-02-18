@@ -25,7 +25,11 @@ export default function PartialMessage(props: PartialMessageProps) {
     });
 
     return (
-        <li ref={ref} className={glow && !done ? "message partial glow" : "message partial"}>
+        <li
+            ref={ref}
+            className={glow && !done ? "message partial glow" : "message partial"}
+            meta-message-id={props.id}
+        >
             {renderContent(props.content, props.resolved)}
             {renderAttachments(props.attachments)}
         </li>
