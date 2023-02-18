@@ -1,7 +1,28 @@
 .message .message-link-button, .message.partial .message-link-button {
+    display: block;
+    position: relative;
     opacity: 0;
+    background-color: #36393F;
+    padding: 0.1rem 0.5ch;
+    font-size: 1.2rem;
+    color: #B8B9BF;
+    border-radius: 6px;
+    border: 1px solid #2A2B30;
+    transition: background-color 0.1s linear;
+}
+
+.message .message-link-button {
+    top: -1rem;
+}
+
+.message.partial .message-link-button {
+    top: -0.75rem;
 }
 
 .message:hover .message-link-button {
     opacity: inherit;
+}
+
+.message .message-link-button:hover, .message.partial .message-link-button:hover {
+    background-color: #4a4c52;
 }
