@@ -31,8 +31,10 @@ export default function PartialMessage(props: PartialMessageProps) {
             className={glow && !done ? "message partial glow" : "message partial"}
             meta-message-id={props.id}
         >
-            {renderContent(props.content, props.resolved)}
-            {renderAttachments(props.attachments)}
+            <div className="message-container">
+                {renderContent(props.content, props.resolved)}
+                {renderAttachments(props.attachments)}
+            </div>
             <MessageLinkButton messageId={props.id} />
         </li>
     );

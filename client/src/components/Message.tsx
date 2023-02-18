@@ -63,8 +63,8 @@ export default function Message(props: MessageProps) {
             meta-message-id={props.id}
         >
             <img className="avatar" src={author?.avatarUrl} alt={`${tag}'s avatar`} />
-            <div className="content">
-                <div className="content-header">
+            <div className="message-container">
+                <div className="message-header">
                     <span className="author" meta-author-id={props.authorId}>{tag}</span>
                     <span className="timestamp">{formatTimestamp(props.createdAt)}</span>
                 </div>

@@ -19,7 +19,7 @@
 }
 
 .message.partial {
-    padding: 0.25rem 0 0.25rem calc(3rem + 5ch);
+    padding: 0.25rem 3ch 0.25rem calc(3rem + 5ch);
 }
 
 .message>* {
@@ -33,16 +33,16 @@
     flex: 0 1 auto;
 }
 
-.content {
+.message-container {
     flex: 1 1 auto;
     line-height: 1.25rem;
 }
 
-.content>*, .message.partial>* {
+.message-container>* {
     display: block;
 }
 
-.content-header {
+.message-header {
     margin-bottom: 0.4rem;
 }
 
