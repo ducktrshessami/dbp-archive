@@ -1,7 +1,7 @@
 .message .message-link-button, .message.partial .message-link-button {
-    display: none;
+    opacity: 0;
 }
 
 .message:hover .message-link-button {
-    display: inherit;
+    opacity: inherit;
 }
