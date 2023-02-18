@@ -11,7 +11,7 @@
 }
 
 .message.glow {
-    background-color: #3E414D;
+    background-color: #3E414D!important;
 }
 
 .message:hover {
