@@ -1,0 +1,7 @@
+.message .message-link-button, .message.partial .message-link-button {
+    display: none;
+}
+
+.message:hover .message-link-button {
+    display: inherit;
+}
