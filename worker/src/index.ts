@@ -13,7 +13,7 @@ export default {
             try {
                 const source = new URL(request.url);
                 const destination = new URL(KV_DESTINATION.value);
-                destination.pathname += source.pathname;
+                destination.pathname = destination.pathname === "/" ? source.pathname : destination.pathname + source.pathname;
                 destination.search = source.search;
                 destination.hash = source.hash;
                 const redirect = new Request(destination.toString(), request);
