@@ -8,7 +8,16 @@
     transition: color 0.1s linear;
 }
 
+.spoiler .emoji {
+    opacity: 0;
+    transition: opacity 0.1s linear;
+}
+
 .spoiler.revealed {
     background-color: #4A4D53;
     color: inherit;
+}
+
+.spoiler.revealed .emoji {
+    opacity: inherit;
 }
