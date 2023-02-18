@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ChannelList from "../components/ChannelList";
-import MessageContainer from "../components/MessageContainer";
+import MessageListContainer from "../components/MessageListContainer";
 import { getResolvedData, ResolvedData } from "../utils/api";
 import "./Archive.css";
 
@@ -35,7 +35,7 @@ export default function Archive() {
     return (
         <main className="archive">
             <ChannelList channels={resolvedData?.channels} selected={channelId} />
-            <MessageContainer resolved={resolvedData} channelId={channelId} page={page} />
+            <MessageListContainer resolved={resolvedData} channelId={channelId} page={page} />
         </main>
     );
 }

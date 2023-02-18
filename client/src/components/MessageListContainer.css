@@ -1,4 +1,4 @@
-.message-container {
+.message-list-container {
     max-height: calc(100vh - 5rem);
     flex: 1 1 auto;
     display: flex;

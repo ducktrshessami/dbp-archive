@@ -7,7 +7,7 @@ import {
 } from "../utils/api";
 import MessageList from "./MessageList";
 import MessagePagination, { MessagePaginationProps } from "./MessagePagination";
-import "./MessageContainer.css";
+import "./MessageListContainer.css";
 import { ResolvedMessageData } from "../utils/renderMessage";
 
 function renderMessagePagination(channelSelected: boolean, props: MessagePaginationProps) {
@@ -26,7 +26,7 @@ function renderMessagePagination(channelSelected: boolean, props: MessagePaginat
     }
 }
 
-export default function MessageContainer(props: MessageContainerProps) {
+export default function MessageListContainer(props: MessageListContainerProps) {
     const navigate = useNavigate();
     const [fetchedData, setFetchedData] = useState<Nullable<FetchedData>>(null);
     const selectedChannel = props.resolved?.channels.get(props.channelId!);
@@ -74,7 +74,7 @@ export default function MessageContainer(props: MessageContainerProps) {
     });
 
     return (
-        <div className="message-container">
+        <div className="message-list-container">
             {renderMessagePagination(channelSelected, {
                 ...paginationProps,
                 top: true
@@ -92,7 +92,7 @@ export default function MessageContainer(props: MessageContainerProps) {
     );
 }
 
-type MessageContainerProps = {
+type MessageListContainerProps = {
     resolved?: Nullable<ResolvedData>,
     channelId?: Nullable<string>,
     page?: Nullable<string>
