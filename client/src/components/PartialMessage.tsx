@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { MESSAGE_GLOWTIMEOUT } from "../constants";
 import { renderAttachments, renderContent } from "../utils/renderMessage";
+import MessageLinkButton from "./MessageLinkButton";
 import { PartialMessageProps } from "./MessageProps";
 
 export default function PartialMessage(props: PartialMessageProps) {
@@ -32,6 +33,7 @@ export default function PartialMessage(props: PartialMessageProps) {
         >
             {renderContent(props.content, props.resolved)}
             {renderAttachments(props.attachments)}
+            <MessageLinkButton messageId={props.id} />
         </li>
     );
 }

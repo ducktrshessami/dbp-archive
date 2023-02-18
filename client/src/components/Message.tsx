@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import { MESSAGE_GLOWTIMEOUT } from "../constants";
 import { renderAttachments, renderContent } from "../utils/renderMessage";
 import userTag from "../utils/userTag";
+import MessageLinkButton from "./MessageLinkButton";
 import { MessageProps } from "./MessageProps";
 
 function widen(n: number, minDigits: number): string {
@@ -70,6 +71,7 @@ export default function Message(props: MessageProps) {
                 {renderContent(props.content, props.resolved)}
                 {renderAttachments(props.attachments)}
             </div>
+            <MessageLinkButton messageId={props.id} />
         </li>
     );
 }
