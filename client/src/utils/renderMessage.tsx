@@ -59,15 +59,15 @@ function parseEveryoneMentions(content: ParsableContent) {
 }
 
 function parseRawContent(content: string, resolved: ResolvedMessageData) {
-    return parseEveryoneMentions(
-        parseIdMentions(
-            parseEmojis(
+    return parseEmojis(
+        parseEveryoneMentions(
+            parseIdMentions(
                 parseMessageLinks(
                     content,
                     resolved.messageLinks
-                )
-            ),
-            resolved
+                ),
+                resolved
+            )
         )
     )
         .map((node, i) => {
