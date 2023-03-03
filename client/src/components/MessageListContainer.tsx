@@ -5,10 +5,10 @@ import {
     MessageData,
     ResolvedData
 } from "../utils/api";
+import { ResolvedMessageData } from "../utils/renderMessage";
 import MessageList from "./MessageList";
 import MessagePagination, { MessagePaginationProps } from "./MessagePagination";
 import "./MessageListContainer.css";
-import { ResolvedMessageData } from "../utils/renderMessage";
 
 function renderMessagePagination(channelSelected: boolean, props: MessagePaginationProps) {
     if (channelSelected) {

@@ -1,10 +1,10 @@
 import { BeatLoader } from "react-spinners";
 import { MESSAGE_AGEBREAK } from "../constants";
+import { ResolvedMessageData } from "../utils/renderMessage";
 import Message from "./Message";
 import Notice from "./Notice";
 import PartialMessage from "./PartialMessage";
 import "./MessageList.css";
-import { ResolvedMessageData } from "../utils/renderMessage";
 
 function renderMessageList(props: MessageListProps) {
     switch (true) {
