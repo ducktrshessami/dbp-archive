@@ -30,31 +30,24 @@ function parseEmojis(content: ParsableContent) {
     ));
 }
 
-function parseUserMentions(content: ParsableContent, users?: Nullable<Map<string, UserData>>) {
-    return reactStringReplace(content, /<@!?(?<id>\d{17,19})>/, (match, i) => {
-        const tag = userTag(users?.get(match.groups!.id));
+function parseIdMentions(content: ParsableContent, resolved?: ResolvedMentionableData) {
+    return reactStringReplace(content, /<(?<prefix>[@#])(?<role>&?)(?<id>\d{17,19})>/, (match, i) => {
+        let name: string;
+        switch (true) {
+            case !!match.groups!.role:
+                const role = resolved?.roles?.get(match.groups!.id);
+                name = role?.name ?? "deleted-role";
+                break;
+            case match.groups!.prefix === "#":
+                const channel = resolved?.channels?.get(match.groups!.id);
+                name = channel?.name ?? "deleted-channel";
+            default:
+                const user = resolved?.users?.get(match.groups!.id);
+                name = userTag(user);
+                break;
+        }
         return (
-            <Mention key={match.groups!.id + i}>@{tag}</Mention>
-        );
-    });
-}
-
-function parseChannelMentions(content: ParsableContent, channels?: Nullable<Map<string, ChannelData>>) {
-    return reactStringReplace(content, /<#(?<id>\d{17,19})>/, (match, i) => {
-        const channel = channels?.get(match.groups!.id);
-        const name = channel?.name ?? "deleted-channel";
-        return (
-            <Mention key={match.groups!.id + i}>#{name}</Mention>
-        );
-    });
-}
-
-function parseRoleMentions(content: ParsableContent, roles?: Nullable<Map<string, RoleData>>) {
-    return reactStringReplace(content, /<@&(?<id>\d{17,19})>/, (match, i) => {
-        const role = roles?.get(match.groups!.id);
-        const name = role?.name ?? "deleted-role";
-        return (
-            <Mention key={match.groups!.id + i}>@{name}</Mention>
+            <Mention key={match.groups!.id + i}>{`${match.groups!.prefix}${name}`}</Mention>
         );
     });
 }
@@ -66,21 +59,15 @@ function parseEveryoneMentions(content: ParsableContent) {
 }
 
 function parseRawContent(content: string, resolved: ResolvedMessageData) {
-    return parseEveryoneMentions(
-        parseRoleMentions(
-            parseChannelMentions(
-                parseUserMentions(
-                    parseEmojis(
-                        parseMessageLinks(
-                            content,
-                            resolved.messageLinks
-                        )
-                    ),
-                    resolved.users
+    return parseEmojis(
+        parseEveryoneMentions(
+            parseIdMentions(
+                parseMessageLinks(
+                    content,
+                    resolved.messageLinks
                 ),
-                resolved.channels
-            ),
-            resolved.roles
+                resolved
+            )
         )
     )
         .map((node, i) => {
@@ -140,10 +127,13 @@ export function renderAttachments(attachments: Array<string>) {
     }
 }
 
-export type ResolvedMessageData = {
+type ResolvedMentionableData = {
     channels?: Nullable<Map<string, ChannelData>>,
     users?: Nullable<Map<string, UserData>>,
-    roles?: Nullable<Map<string, RoleData>>,
+    roles?: Nullable<Map<string, RoleData>>
+};
+
+export type ResolvedMessageData = ResolvedMentionableData & {
     messageLinks?: Nullable<Map<string, number>>,
     messages?: Nullable<Array<MessageData>>
 };
