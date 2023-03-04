@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import reactStringReplace from "react-string-replace";
 import Emoji from "../components/Emoji";
-import Markdown from "../components/Markdown";
+import LazyMarkdown from "../components/LazyMarkdown";
 import Mention from "../components/Mention";
 import Spoiler from "../components/Spoiler";
 import {
@@ -73,7 +73,7 @@ function parseRawContent(content: string, resolved: ResolvedMessageData) {
         .map((node, i) => {
             if (typeof node === "string") {
                 return (
-                    <Markdown key={`markdown-${i}`}>{node}</Markdown>
+                    <LazyMarkdown key={`markdown-${i}`}>{node}</LazyMarkdown>
                 );
             }
             else {
