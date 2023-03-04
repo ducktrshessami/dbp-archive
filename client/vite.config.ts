@@ -13,5 +13,14 @@ export default defineConfig({
       "/users.css": "http://localhost:3001",
       "/emojis.css": "http://localhost:3001"
     }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          highlight: ["highlight.js"]
+        }
+      }
+    }
   }
 })
