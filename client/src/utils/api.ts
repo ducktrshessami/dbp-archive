@@ -34,6 +34,26 @@ export async function getResolvedData(): Promise<ResolvedData> {
     };
 }
 
+export async function getResolvedChannels(): Promise<Map<string, ChannelData>> {
+    const rawChannels: Array<ChannelData> = await fetchJson("/api/resolved/channels");
+    return fromArray(rawChannels);
+}
+
+export async function getResolvedUsers(): Promise<Map<string, UserData>> {
+    const rawUsers: Array<UserData> = await fetchJson("/api/resolved/users");
+    return fromArray(rawUsers);
+}
+
+export async function getResolvedRoles(): Promise<Map<string, RoleData>> {
+    const rawRoles: Array<RoleData> = await fetchJson("/api/resolved/roles");
+    return fromArray(rawRoles);
+}
+
+export async function getResolvedMessageLinks(): Promise<Map<string, number>> {
+    const rawMessageLinks: Array<[string, number]> = await fetchJson("/api/resolved/message-links");
+    return new Map<string, number>(rawMessageLinks);
+}
+
 export async function getChannelPage(channelId: string, page: number): Promise<Array<MessageData>> {
     return await fetchJson(`/api/channel/${channelId}/${page}`);
 }
