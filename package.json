@@ -29,6 +29,7 @@
   "homepage": "https://github.com/ducktrshessami/dbp-archive#readme",
   "dependencies": {
     "express": "^4.18.2",
+    "express-static-gzip": "^2.1.7",
     "ngrok": "^4.3.3",
     "sequelize": "^6.28.0",
     "sqlite3": "^5.1.4",
