@@ -13,28 +13,6 @@ import { PAGE_LIMIT } from "./constants";
 export const router = Router();
 
 router
-    .get("/api/resolved", async (_, res) => {
-        const [
-            channels,
-            users,
-            roles,
-            messageLinks
-        ] = await Promise.all([
-            channelList(),
-            userList(),
-            roleList(),
-            resolveMessageLinks()
-        ]);
-        const data: ResolvedData = {
-            channels,
-            users,
-            roles,
-            messageLinks
-        };
-        res
-            .status(200)
-            .json(data);
-    })
     .get("/api/resolved/channels", async (_, res) => {
         const channels = await channelList();
         res
