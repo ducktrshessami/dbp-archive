@@ -13,29 +13,30 @@ import { PAGE_LIMIT } from "./constants";
 export const router = Router();
 
 router
-    .get("/api/resolved/channels", async (_, res) => {
+    .get("/api/channels", async (_, res) => {
         const channels = await channelList();
         res
             .status(200)
             .json(channels);
     })
-    .get("/api/resolved/users", async (_, res) => {
-        const users = await userList();
+    .get("/api/resolved", async (_, res) => {
+        const [
+            users,
+            roles,
+            messageLinks
+        ] = await Promise.all([
+            userList(),
+            roleList(),
+            resolveMessageLinks()
+        ]);
+        const resolved: ResolvedData = {
+            users,
+            roles,
+            messageLinks
+        };
         res
             .status(200)
-            .json(users);
-    })
-    .get("/api/resolved/roles", async (_, res) => {
-        const roles = await roleList();
-        res
-            .status(200)
-            .json(roles);
-    })
-    .get("/api/resolved/message-links", async (_, res) => {
-        const messageLinks = await resolveMessageLinks();
-        res
-            .status(200)
-            .json(messageLinks);
+            .json(resolved);
     })
     .get("/api/channel/:channelId/:page", async (req, res) => {
         const pageNumber = parseInt(req.params.page);
@@ -209,7 +210,6 @@ type RoleData = {
 type MessageLinkData = [string, number];
 
 type ResolvedData = {
-    channels: Array<ChannelData>,
     users: Array<UserData>,
     roles: Array<RoleData>,
     messageLinks: Array<MessageLinkData>
