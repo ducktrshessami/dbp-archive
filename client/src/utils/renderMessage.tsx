@@ -134,9 +134,8 @@ type ResolvedMentionableData = {
     roles?: Nullable<Map<string, RoleData>>
 };
 
-export type ResolvedMessageData = ResolvedMentionableData & {
-    messageLinks?: Nullable<Map<string, number>>,
-    messages?: Nullable<Array<MessageData>>
-};
+export type ResolvedData = ResolvedMentionableData & { messageLinks?: Nullable<Map<string, number>> };
+
+export type ResolvedMessageData = ResolvedData & { messages?: Nullable<Array<MessageData>> };
 
 type ParsableContent = string | ReactNode[];

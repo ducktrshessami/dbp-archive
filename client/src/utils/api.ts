@@ -24,16 +24,6 @@ function createPostJsonOptions(body: any): RequestInit {
     };
 }
 
-export async function getResolvedData(): Promise<ResolvedData> {
-    const rawData: RawResolvedData = await fetchJson("/api/resolved");
-    return {
-        channels: fromArray(rawData.channels),
-        users: fromArray(rawData.users),
-        roles: fromArray(rawData.roles),
-        messageLinks: new Map<string, number>(rawData.messageLinks)
-    };
-}
-
 export async function getResolvedChannels(): Promise<Map<string, ChannelData>> {
     const rawChannels: Array<ChannelData> = await fetchJson("/api/resolved/channels");
     return fromArray(rawChannels);
@@ -50,7 +40,7 @@ export async function getResolvedRoles(): Promise<Map<string, RoleData>> {
 }
 
 export async function getResolvedMessageLinks(): Promise<Map<string, number>> {
-    const rawMessageLinks: Array<[string, number]> = await fetchJson("/api/resolved/message-links");
+    const rawMessageLinks: Array<RawMessageLinkData> = await fetchJson("/api/resolved/message-links");
     return new Map<string, number>(rawMessageLinks);
 }
 
@@ -95,17 +85,3 @@ export type RoleData = {
 };
 
 type RawMessageLinkData = [string, number];
-
-type RawResolvedData = {
-    channels: Array<ChannelData>,
-    users: Array<UserData>,
-    roles: Array<RoleData>,
-    messageLinks: Array<RawMessageLinkData>
-};
-
-export type ResolvedData = {
-    channels: Map<string, ChannelData>,
-    users: Map<string, UserData>,
-    roles: Map<string, RoleData>,
-    messageLinks: Map<string, number>
-};
