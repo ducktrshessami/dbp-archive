@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-    getChannelPage,
-    MessageData,
-    ResolvedData
-} from "../utils/api";
+import { getChannelPage, MessageData } from "../utils/api";
+import { ResolvedData } from "../utils/renderMessage";
 import MessageList from "./MessageList";
 import MessagePagination, { MessagePaginationProps } from "./MessagePagination";
 import "./MessageListContainer.css";
-import { ResolvedMessageData } from "../utils/renderMessage";
 
 function renderMessagePagination(channelSelected: boolean, props: MessagePaginationProps) {
     if (channelSelected) {
@@ -29,7 +25,7 @@ function renderMessagePagination(channelSelected: boolean, props: MessagePaginat
 export default function MessageListContainer(props: MessageListContainerProps) {
     const navigate = useNavigate();
     const [fetchedData, setFetchedData] = useState<Nullable<FetchedData>>(null);
-    const selectedChannel = props.resolved?.channels.get(props.channelId!);
+    const selectedChannel = props.resolved?.channels?.get(props.channelId!);
     const channelSelected = !!props.channelId;
     const page = parseInt(props.page!);
     const ready = !!props.resolved &&
@@ -39,10 +35,6 @@ export default function MessageListContainer(props: MessageListContainerProps) {
         page,
         pageCount: selectedChannel?.pages,
         channelId: props.channelId
-    };
-    const resolvedData: ResolvedMessageData = {
-        ...props.resolved,
-        messages: fetchedData?.messages
     };
 
     useEffect(() => {
@@ -82,7 +74,8 @@ export default function MessageListContainer(props: MessageListContainerProps) {
             <MessageList
                 channelSelected={channelSelected}
                 ready={ready}
-                resolved={resolvedData}
+                resolved={props.resolved}
+                messages={fetchedData?.messages}
             />
             {renderMessagePagination(channelSelected, {
                 ...paginationProps,
@@ -93,7 +86,7 @@ export default function MessageListContainer(props: MessageListContainerProps) {
 }
 
 type MessageListContainerProps = {
-    resolved?: Nullable<ResolvedData>,
+    resolved: ResolvedData,
     channelId?: Nullable<string>,
     page?: Nullable<string>
 };

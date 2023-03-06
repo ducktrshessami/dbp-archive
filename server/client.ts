@@ -1,4 +1,5 @@
-import { Router, static as serveStatic } from "express";
+import { Router } from "express";
+import expressStaticGzip from "express-static-gzip";
 import { existsSync } from "fs";
 import { join, resolve } from "path";
 
@@ -8,7 +9,7 @@ export const router = Router();
 
 if (existsSync(CLIENT_PATH)) {
     router
-        .use(serveStatic(CLIENT_PATH))
+        .use(expressStaticGzip(CLIENT_PATH, {}))
         .get("*", (_, res) =>
             res
                 .status(200)

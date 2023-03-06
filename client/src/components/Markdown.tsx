@@ -8,4 +8,4 @@ export default function Markdown(props: MarkdownProps) {
     );
 }
 
-type MarkdownProps = { children: string };
+export type MarkdownProps = { children: string };

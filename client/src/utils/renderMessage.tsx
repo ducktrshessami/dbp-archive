@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import reactStringReplace from "react-string-replace";
 import Emoji from "../components/Emoji";
-import Markdown from "../components/Markdown";
+import LazyMarkdown from "../components/LazyMarkdown";
 import Mention from "../components/Mention";
 import Spoiler from "../components/Spoiler";
 import {
@@ -41,6 +41,7 @@ function parseIdMentions(content: ParsableContent, resolved?: ResolvedMentionabl
             case match.groups!.prefix === "#":
                 const channel = resolved?.channels?.get(match.groups!.id);
                 name = channel?.name ?? "deleted-channel";
+                break;
             default:
                 const user = resolved?.users?.get(match.groups!.id);
                 name = userTag(user);
@@ -58,7 +59,7 @@ function parseEveryoneMentions(content: ParsableContent) {
     ));
 }
 
-function parseRawContent(content: string, resolved: ResolvedMessageData) {
+function parseRawContent(content: string, resolved: ResolvedData) {
     return parseEmojis(
         parseEveryoneMentions(
             parseIdMentions(
@@ -73,7 +74,7 @@ function parseRawContent(content: string, resolved: ResolvedMessageData) {
         .map((node, i) => {
             if (typeof node === "string") {
                 return (
-                    <Markdown key={`markdown-${i}`}>{node}</Markdown>
+                    <LazyMarkdown key={`markdown-${i}`}>{node}</LazyMarkdown>
                 );
             }
             else {
@@ -82,13 +83,13 @@ function parseRawContent(content: string, resolved: ResolvedMessageData) {
         });
 }
 
-function parseSpoilerTags(content: ParsableContent, resolved: ResolvedMessageData) {
+function parseSpoilerTags(content: ParsableContent, resolved: ResolvedData) {
     return reactStringReplace(content, /\|\|(?<inner>(?:[^\|]|\\\|)+)\|\|/, (match, i) => (
         <Spoiler key={`spoiler-${i}`}>{parseRawContent(match.groups!.inner, resolved)}</Spoiler>
     ));
 }
 
-function parseContent(content: string, resolved: ResolvedMessageData) {
+function parseContent(content: string, resolved: ResolvedData) {
     return parseSpoilerTags(content, resolved)
         .flatMap(node => {
             if (typeof node === "string") {
@@ -100,7 +101,7 @@ function parseContent(content: string, resolved: ResolvedMessageData) {
         });
 }
 
-export function renderContent(content: string, resolved: ResolvedMessageData) {
+export function renderContent(content: string, resolved: ResolvedData) {
     if (content.length) {
         return (
             <div>{parseContent(content, resolved)}</div>
@@ -133,9 +134,6 @@ type ResolvedMentionableData = {
     roles?: Nullable<Map<string, RoleData>>
 };
 
-export type ResolvedMessageData = ResolvedMentionableData & {
-    messageLinks?: Nullable<Map<string, number>>,
-    messages?: Nullable<Array<MessageData>>
-};
+export type ResolvedData = ResolvedMentionableData & { messageLinks?: Nullable<Map<string, number>> };
 
 type ParsableContent = string | ReactNode[];

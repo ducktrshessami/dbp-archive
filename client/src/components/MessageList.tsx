@@ -1,21 +1,22 @@
 import { BeatLoader } from "react-spinners";
 import { MESSAGE_AGEBREAK } from "../constants";
+import { MessageData } from "../utils/api";
+import { ResolvedData } from "../utils/renderMessage";
 import Message from "./Message";
 import Notice from "./Notice";
 import PartialMessage from "./PartialMessage";
 import "./MessageList.css";
-import { ResolvedMessageData } from "../utils/renderMessage";
 
 function renderMessageList(props: MessageListProps) {
     switch (true) {
-        case props.channelSelected && props.ready && !!props.resolved.messages:
-            const messages = props.resolved.messages!.map((message, i) => {
+        case props.channelSelected && props.ready && !!props.messages:
+            const messages = props.messages!.map((message, i) => {
                 const createdAt = new Date(message.createdAt);
                 if (
                     message.break ||
                     i === 0 ||
-                    message.authorId !== props.resolved.messages![i - 1].authorId ||
-                    (message.createdAt - props.resolved.messages![i - 1].createdAt) >= MESSAGE_AGEBREAK
+                    message.authorId !== props.messages![i - 1].authorId ||
+                    (message.createdAt - props.messages![i - 1].createdAt) >= MESSAGE_AGEBREAK
                 ) {
                     return (
                         <Message
@@ -71,5 +72,6 @@ export default function MessageList(props: MessageListProps) {
 type MessageListProps = {
     channelSelected: boolean,
     ready: boolean,
-    resolved: ResolvedMessageData
+    resolved: ResolvedData,
+    messages?: Nullable<Array<MessageData>>
 };
