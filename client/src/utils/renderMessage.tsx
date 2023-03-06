@@ -31,10 +31,10 @@ function parseEmojis(content: ParsableContent) {
 }
 
 function parseIdMentions(content: ParsableContent, resolved?: ResolvedMentionableData) {
-    return reactStringReplace(content, /<(?<prefix>[@#])(?<role>&?)(?<id>\d{17,19})>/, (match, i) => {
+    return reactStringReplace(content, /<(?<prefix>[@#])(?<secondary>[&!]?)(?<id>\d{17,19})>/, (match, i) => {
         let name: string;
         switch (true) {
-            case !!match.groups!.role:
+            case match.groups!.secondary === "&":
                 const role = resolved?.roles?.get(match.groups!.id);
                 name = role?.name ?? "deleted-role";
                 break;
