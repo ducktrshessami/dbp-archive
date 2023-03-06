@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getChannelPage, MessageData } from "../utils/api";
-import { ResolvedData, ResolvedMessageData } from "../utils/renderMessage";
+import { ResolvedData } from "../utils/renderMessage";
 import MessageList from "./MessageList";
 import MessagePagination, { MessagePaginationProps } from "./MessagePagination";
 import "./MessageListContainer.css";
@@ -35,10 +35,6 @@ export default function MessageListContainer(props: MessageListContainerProps) {
         page,
         pageCount: selectedChannel?.pages,
         channelId: props.channelId
-    };
-    const resolvedData: ResolvedMessageData = {
-        ...props.resolved,
-        messages: fetchedData?.messages
     };
 
     useEffect(() => {
@@ -78,7 +74,8 @@ export default function MessageListContainer(props: MessageListContainerProps) {
             <MessageList
                 channelSelected={channelSelected}
                 ready={ready}
-                resolved={resolvedData}
+                resolved={props.resolved}
+                messages={fetchedData?.messages}
             />
             {renderMessagePagination(channelSelected, {
                 ...paginationProps,
@@ -89,7 +86,7 @@ export default function MessageListContainer(props: MessageListContainerProps) {
 }
 
 type MessageListContainerProps = {
-    resolved?: Nullable<ResolvedData>,
+    resolved: ResolvedData,
     channelId?: Nullable<string>,
     page?: Nullable<string>
 };
