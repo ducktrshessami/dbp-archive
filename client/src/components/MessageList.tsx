@@ -1,7 +1,7 @@
 import { BeatLoader } from "react-spinners";
 import { MESSAGE_AGEBREAK } from "../constants";
 import { MessageData } from "../utils/api";
-import { ResolvedData } from "../utils/renderMessage";
+import { ResolvedMessageData } from "../utils/renderMessage";
 import Message from "./Message";
 import Notice from "./Notice";
 import PartialMessage from "./PartialMessage";
@@ -72,6 +72,6 @@ export default function MessageList(props: MessageListProps) {
 type MessageListProps = {
     channelSelected: boolean,
     ready: boolean,
-    resolved: ResolvedData,
+    resolved: ResolvedMessageData,
     messages?: Nullable<Array<MessageData>>
 };
