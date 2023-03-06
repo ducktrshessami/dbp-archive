@@ -2,7 +2,16 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ChannelList from "../components/ChannelList";
 import MessageListContainer from "../components/MessageListContainer";
-import { getResolvedData, ResolvedData } from "../utils/api";
+import {
+    ChannelData,
+    getResolvedChannels,
+    getResolvedMessageLinks,
+    getResolvedRoles,
+    getResolvedUsers,
+    RoleData,
+    UserData
+} from "../utils/api";
+import { ResolvedData } from "../utils/renderMessage";
 import "./Archive.css";
 
 export default function Archive() {
@@ -10,7 +19,16 @@ export default function Archive() {
     let page: Nullable<string> = null;
     const location = useLocation();
     const navigate = useNavigate();
-    const [resolvedData, setResolvedData] = useState<Nullable<ResolvedData>>(null);
+    const [channels, setChannels] = useState<Nullable<Map<string, ChannelData>>>(null);
+    const [users, setUsers] = useState<Nullable<Map<string, UserData>>>(null);
+    const [roles, setRoles] = useState<Nullable<Map<string, RoleData>>>(null);
+    const [messageLinks, setMessageLinks] = useState<Nullable<Map<string, number>>>(null);
+    const resolvedData: ResolvedData = {
+        channels,
+        users,
+        roles,
+        messageLinks
+    };
     const hasRoute = /^\/.+$/.test(location.pathname);
 
     if (hasRoute) {
@@ -20,9 +38,20 @@ export default function Archive() {
     }
 
     useEffect(() => {
-        if (resolvedData === null) {
-            getResolvedData()
-                .then(setResolvedData);
+        if (
+            channels === null &&
+            users === null &&
+            roles === null &&
+            messageLinks === null
+        ) {
+            getResolvedChannels()
+                .then(setChannels);
+            getResolvedUsers()
+                .then(setUsers);
+            getResolvedRoles()
+                .then(setRoles);
+            getResolvedMessageLinks()
+                .then(setMessageLinks);
         }
         if (channelId && !page) {
             navigate(`/${channelId}/1`, { replace: true });
@@ -30,11 +59,20 @@ export default function Archive() {
         else if (hasRoute && !channelId && !page) {
             navigate("/", { replace: true });
         }
-    }, [resolvedData, channelId, page, hasRoute, navigate]);
+    }, [
+        channels,
+        users,
+        roles,
+        messageLinks,
+        channelId,
+        page,
+        hasRoute,
+        navigate
+    ]);
 
     return (
         <main className="archive">
-            <ChannelList channels={resolvedData?.channels} selected={channelId} />
+            <ChannelList channels={channels} selected={channelId} />
             <MessageListContainer resolved={resolvedData} channelId={channelId} page={page} />
         </main>
     );
