@@ -41,6 +41,7 @@ function parseIdMentions(content: ParsableContent, resolved?: ResolvedMentionabl
             case match.groups!.prefix === "#":
                 const channel = resolved?.channels?.get(match.groups!.id);
                 name = channel?.name ?? "deleted-channel";
+                break;
             default:
                 const user = resolved?.users?.get(match.groups!.id);
                 name = userTag(user);
