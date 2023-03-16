@@ -1,5 +1,5 @@
 import { UserData } from "./api";
 
 export default function userTag(user?: UserData): string {
-    return user ? `${user.username}#${user.discriminator}` : "Unknown User";
+    return user ? user.username : "Unknown User";
 }
