@@ -103,7 +103,7 @@ function defaultAvatarUrl(discriminator: string): string {
 }
 
 function avatarUrl(user: User): string {
-    return user.avatarFilename ? `/avatar/${user.avatarFilename}` : defaultAvatarUrl(user.discriminator);
+    return user.avatarFilename ? `/avatars/${user.avatarFilename}` : defaultAvatarUrl(user.discriminator);
 }
 
 async function getChannelPage(channelId: string, pageIndex: number): Promise<Array<MessageData> | null> {

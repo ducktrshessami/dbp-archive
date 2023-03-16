@@ -28,7 +28,7 @@ router
             attributes: ["id", "filename"]
         });
         const style = emojis
-            .map(emoji => `.emoji[meta-emoji-id="${emoji.id}"]{content:url("/emoji/${emoji.filename}");}`)
+            .map(emoji => `.emoji[meta-emoji-id="${emoji.id}"]{content:url("/emojis/${emoji.filename}");}`)
             .join("");
         res
             .status(200)

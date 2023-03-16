@@ -8,9 +8,9 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": "http://localhost:3001",
-      "/attachment": "http://localhost:3001",
-      "/avatar": "http://localhost:3001",
-      "/emoji": "http://localhost:3001",
+      "/attachments": "http://localhost:3001",
+      "/avatars": "http://localhost:3001",
+      "/emojis": "http://localhost:3001",
       "/users.css": "http://localhost:3001",
       "/emojis.css": "http://localhost:3001"
     }
