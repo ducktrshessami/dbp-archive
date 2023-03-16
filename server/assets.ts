@@ -1,54 +1,16 @@
-import { Router } from "express";
+import { Router, static as serveStatic } from "express";
 import { existsSync } from "fs";
-import { join, resolve } from "path";
+import { resolve } from "path";
 import { Emoji, User } from "../models";
 
 const ASSETS_PATH = resolve(__dirname, "..", "assets");
-const ATTACHMENTS_PATH = join(ASSETS_PATH, "attachments");
-const AVATARS_PATH = join(ASSETS_PATH, "avatars");
-const EMOJIS_PATH = join(ASSETS_PATH, "emojis");
 export const router = Router();
 
+if (existsSync(ASSETS_PATH)) {
+    router.use(serveStatic(ASSETS_PATH));
+}
+
 router
-    .get("/attachment/:filename", (req, res) => {
-        const filepath = join(ATTACHMENTS_PATH, req.params.filename);
-        if (existsSync(filepath)) {
-            res
-                .status(200)
-                .sendFile(filepath);
-        }
-        else {
-            res
-                .status(404)
-                .end();
-        }
-    })
-    .get("/avatar/:filename", (req, res) => {
-        const filepath = join(AVATARS_PATH, req.params.filename);
-        if (existsSync(filepath)) {
-            res
-                .status(200)
-                .sendFile(filepath);
-        }
-        else {
-            res
-                .status(404)
-                .end();
-        }
-    })
-    .get("/emoji/:filename", (req, res) => {
-        const filepath = join(EMOJIS_PATH, req.params.filename);
-        if (existsSync(filepath)) {
-            res
-                .status(200)
-                .sendFile(filepath);
-        }
-        else {
-            res
-                .status(404)
-                .end();
-        }
-    })
     .get("/users.css", async (_, res) => {
         const users = await User.findAll({
             attributes: ["id", "displayColor"]
@@ -66,7 +28,7 @@ router
             attributes: ["id", "filename"]
         });
         const style = emojis
-            .map(emoji => `.emoji[meta-emoji-id="${emoji.id}"]{content:url("/emoji/${emoji.filename}");}`)
+            .map(emoji => `.emoji[meta-emoji-id="${emoji.id}"]{content:url("/emojis/${emoji.filename}");}`)
             .join("");
         res
             .status(200)

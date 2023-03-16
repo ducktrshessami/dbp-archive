@@ -7,7 +7,6 @@ import Mention from "../components/Mention";
 import Spoiler from "../components/Spoiler";
 import {
     ChannelData,
-    MessageData,
     RoleData,
     UserData
 } from "./api";
