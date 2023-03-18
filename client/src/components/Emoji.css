@@ -1,10 +1,10 @@
 .emoji {
-    width: 1.33rem;
+    max-width: 1.33rem;
     max-height: 1.33rem;
     vertical-align: bottom;
 }
 
 .emoji.solo {
-    width: 3rem;
+    max-width: 3rem;
     max-height: 3rem;
 }
