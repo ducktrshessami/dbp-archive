@@ -16,14 +16,6 @@ async function fetchJson(url: string): Promise<any> {
     return await res.json();
 }
 
-function createPostJsonOptions(body: any): RequestInit {
-    return {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-    };
-}
-
 export async function getChannels(): Promise<Map<string, ChannelData>> {
     const rawChannels: Array<ChannelData> = await fetchJson("/api/channels");
     return fromArray(rawChannels);
@@ -40,14 +32,6 @@ export async function getResolvedData(): Promise<ResolvedData> {
 
 export async function getChannelPage(channelId: string, page: number): Promise<Array<MessageData>> {
     return await fetchJson(`/api/channel/${channelId}/${page}`);
-}
-
-export async function setMessageBreak(messageId: string, value: boolean): Promise<void> {
-    await fetchWrapped(`/api/break/${messageId}`, createPostJsonOptions({ value }));
-}
-
-export async function setChannelHidden(channelId: string, value: boolean): Promise<void> {
-    await fetchWrapped(`/api/hidden/${channelId}`, createPostJsonOptions({ value }));
 }
 
 export type ChannelData = {
