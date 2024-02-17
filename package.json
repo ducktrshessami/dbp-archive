@@ -3,42 +3,34 @@
   "version": "1.0.4",
   "description": "Send these messages to the principal's office!",
   "main": "dist/index.js",
+  "repository": "git@github.com:ducktrshessami/dbp-archive.git",
+  "author": "ducktrshessami <jwee761@gmail.com>",
+  "license": "MIT",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "yarn install-client && yarn install-worker",
-    "prestart": "yarn build",
+    "install": "npm run install-client && npm run install-worker",
+    "prestart": "npm run build",
     "start": "node dist/index.js",
     "build": "tsc",
     "clean": "rm -rf dist/ client/dist/",
-    "install-client": "cd client && yarn",
-    "dev-client": "cd client && yarn dev",
-    "build-client": "cd client && yarn build",
-    "install-worker": "cd worker && yarn",
-    "start-worker": "cd worker && yarn start",
-    "deploy-worker": "cd worker && yarn deploy"
+    "install-client": "cd client && npm i",
+    "dev-client": "cd client && npm run dev",
+    "build-client": "cd client && npm run build",
+    "install-worker": "cd worker && npm i",
+    "start-worker": "cd worker && npm start",
+    "deploy-worker": "cd worker && npm run deploy"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ducktrshessami/dbp-archive.git"
-  },
-  "author": "ducktrshessami",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ducktrshessami/dbp-archive/issues"
-  },
-  "homepage": "https://github.com/ducktrshessami/dbp-archive#readme",
   "dependencies": {
     "express": "^4.18.2",
     "express-static-gzip": "^2.1.7",
     "ngrok": "^4.3.3",
-    "sequelize": "^6.32.1",
-    "sqlite3": "^5.1.6",
-    "undici": "^5.23.0"
+    "sequelize": "^6.37.0",
+    "sqlite3": "^5.1.7",
+    "undici": "^6.6.2"
   },
   "devDependencies": {
-    "@types/express": "^4.17.17",
-    "@types/node": "^20.5.0",
-    "dotenv": "^16.3.1",
-    "typescript": "^5.1.6"
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.19",
+    "dotenv": "^16.4.4",
+    "typescript": "^5.3.3"
   }
 }
