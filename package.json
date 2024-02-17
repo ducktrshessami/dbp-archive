@@ -1,6 +1,6 @@
 {
   "name": "dbp-archive",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Send these messages to the principal's office!",
   "main": "dist/index.js",
   "repository": "git@github.com:ducktrshessami/dbp-archive.git",
